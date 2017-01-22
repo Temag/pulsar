@@ -63,7 +63,7 @@ extern int space;
 	/* flag indicates the program is a client when set = 1 */
 extern int netClient;
 	/* flag indicates the program is a server when set = 1 */
-extern int netServer; 
+extern int netServer;
 	/* size of the window in pixels */
 extern int screenWidth, screenHeight;
 	/* flag indicates if map is to be printed */
@@ -151,7 +151,7 @@ float *la;
 	/* move mob 0 in the x axis */
       if (increasingmob0 == 1)
          mob0x += 0.2;
-      else 
+      else
          mob0x -= 0.2;
       if (mob0x > 50) increasingmob0 = 0;
       if (mob0x < 30) increasingmob0 = 1;
@@ -193,7 +193,7 @@ float *la;
 	/* -button indicates which button was pressed or released */
 	/* -state indicates a button down or button up event */
 	/* -x,y are the screen coordinates when the mouse is pressed or */
-	/*  released */ 
+	/*  released */
 void mouse(int button, int state, int x, int y) {
 
    if (button == GLUT_LEFT_BUTTON)
@@ -267,13 +267,46 @@ int i, j, k;
    } else {
 
 	/* your code to build the world goes here */
+	for(i=0; i<WORLDX; i++)
+		 for(j=0; j<WORLDY; j++)
+				for(k=0; k<WORLDZ; k++)
+					 world[i][j][k] = 0;
 
-   }
+	for(i=0; i<20; i++)
+	{
+		for(j=0; j<20; j++)
+		{
+				world[i][24][j] = 1;
+		}
+	}
+	for(i=0; i<20; i++)
+	{
+		for(k=0; k<5; k++)
+		{
+			world[i][25+k][0] = 2;
+			world[i][25+k][19] = 2;
+		}
+	}
+
+	for(i=0; i<20; i++)
+	{
+		for(k=0; k<5; k++)
+		{
+			world[0][25+k][i] = 2;
+			world[19][25+k][i] = 2;
+		}
+	}
+
+	createPlayer(0, 52.0, 27.0, 52.0, 0.0);
+	setPlayerPosition(0, 1.0, 25.0, 4.0, 0.0);
+	setViewPosition(-1.25, -25.0, -1.0);
+	setViewOrientation(0.0, 172.0, .0);
+
+	}
 
 
 	/* starts the graphics processing loop */
 	/* code after this will not run until the program exits */
    glutMainLoop();
-   return 0; 
+   return 0;
 }
-
