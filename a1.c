@@ -88,9 +88,36 @@ extern void tree(float, float, float, float, float, float, int);
 void collisionResponse() {
 
 	/* your collision code goes here */
+	float *x = malloc(sizeof(float)), *y = malloc(sizeof(float)), *z = malloc(sizeof(float));
+	int fx, fy, fz, rx, ry, rz;
 
+	getViewPosition(x, y, z);
+	fx = floor(*x * -1);
+	fy = floor(*y * -1);
+	fz = floor(*z * -1);
+
+	while(world[fx][fy-1][fz] == 0)
+	{
+		setViewPosition(*x, *y+1, *z);
+		getOldViewPosition(x, y, z);
+		fx = floor(*x * -1);
+		fy = floor(*y * -1);
+		fz = floor(*z * -1);
+	}
+
+	if(world[fx][fy][fz] != 0)
+	{
+		if(world[fx][fy+1][fz] == 0)
+		{
+			setViewPosition(*x, *y-1, *z);
+		}
+		else
+		{
+			getOldViewPosition(x, y, z);
+			setViewPosition(*x, *y, *z);
+		}
+	}
 }
-
 
 	/******* draw2D() *******/
 	/* draws 2D shapes on screen */
