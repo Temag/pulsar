@@ -96,6 +96,10 @@ void collisionResponse() {
 	fy = floor(*y * -1);
 	fz = floor(*z * -1);
 
+	/*
+	Gravity
+	Reduces camera height until collision detection takes over
+	*/
 	while(world[fx][fy-1][fz] == 0)
 	{
 		setViewPosition(*x, *y+1, *z);
@@ -105,6 +109,11 @@ void collisionResponse() {
 		fz = floor(*z * -1);
 	}
 
+	/*
+	Collision detection
+	Checks if the new position contains a block, if not allows the camera to move
+	otherwise returns the camera to the previous position
+	*/
 	if(world[fx][fy][fz] != 0)
 	{
 		if(world[fx][fy+1][fz] == 0)
