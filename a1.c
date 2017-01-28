@@ -11,7 +11,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "graphics.h"
+#include "Game_Engine/graphics.h"
 
 	/* mouse function called by GLUT when a button is pressed or released */
 void mouse(int, int, int, int);
@@ -122,7 +122,7 @@ void collisionResponse() {
 		setViewPosition(*x, *y+0.1, *z);
 		getOldViewPosition(x, y, z);
 	}
-	
+
 	free(x);
 	free(y);
 	free(z);
