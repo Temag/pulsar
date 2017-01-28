@@ -78,6 +78,7 @@ extern void tree(float, float, float, float, float, float, int);
 
 /********* end of extern variable declarations **************/
 
+pillar pillar_array[36];
 
 	/*** collisionResponse() ***/
 	/* -performs collision detection and response */
@@ -92,25 +93,12 @@ void collisionResponse() {
 	int fx, fy, fz, rx, ry, rz;
 
 	getViewPosition(x, y, z);
-	fx = floor(*x * -1);
-	fy = floor(*y * -1);
-	fz = floor(*z * -1);
+	fx = (int)(*x * -1);
+	fy = (int)(*y * -1);
+	fz = (int)(*z * -1);
 
-	/*
-	Gravity
-	Reduces camera height until collision detection takes over
-	*/
-	while(world[fx][fy-1][fz] == 0)
-	{
-		setViewPosition(*x, *y+1, *z);
-		getOldViewPosition(x, y, z);
-		fx = floor(*x * -1);
-		fy = floor(*y * -1);
-		fz = floor(*z * -1);
-	}
 
-	/*
-	Collision detection
+	/*Collision detection
 	Checks if the new position contains a block, if not allows the camera to move
 	otherwise returns the camera to the previous position
 	*/
@@ -126,7 +114,20 @@ void collisionResponse() {
 			setViewPosition(*x, *y, *z);
 		}
 	}
+	/*Gravity
+	Reduces camera height on each update until collision detection would take over
+	*/
+	else if(world[fx][(int)(*y+0.1)*-1][fz] == 0)
+	{
+		setViewPosition(*x, *y+0.1, *z);
+		getOldViewPosition(x, y, z);
+	}
+	
+	free(x);
+	free(y);
+	free(z);
 }
+
 
 	/******* draw2D() *******/
 	/* draws 2D shapes on screen */
@@ -220,7 +221,7 @@ float *la;
    } else {
 
 	/* your code goes here */
-
+			/* Move Character*/
    }
 }
 
@@ -251,7 +252,7 @@ void mouse(int button, int state, int x, int y) {
 
 int main(int argc, char** argv)
 {
-int i, j, k;
+int i, j, k, l=0;
 	/* initialize the graphics system */
    graphicsInit(&argc, argv);
 
@@ -303,42 +304,65 @@ int i, j, k;
    } else {
 
 	/* your code to build the world goes here */
-	for(i=0; i<WORLDX; i++)
-		 for(j=0; j<WORLDY; j++)
-				for(k=0; k<WORLDZ; k++)
-					 world[i][j][k] = 0;
+	/* initialize world to empty */
 
-	for(i=0; i<20; i++)
-	{
-		for(j=0; j<20; j++)
-		{
-				world[i][24][j] = 1;
-		}
-	}
-	for(i=0; i<20; i++)
-	{
-		for(k=0; k<5; k++)
-		{
-			world[i][25+k][0] = 2;
-			world[i][25+k][19] = 2;
-		}
-	}
+      for(i=0; i<WORLDX; i++)
+         for(j=0; j<WORLDY; j++)
+            for(k=0; k<WORLDZ; k++)
+               world[i][j][k] = 0;
 
-	for(i=0; i<20; i++)
-	{
-		for(k=0; k<5; k++)
-		{
-			world[0][25+k][i] = 2;
-			world[19][25+k][i] = 2;
-		}
-	}
+			for(i=0; i<42; i++)
+			{
+				for(j=0; j<42; j++)
+				{
+						world[i][0][j] = 1;
+				}
+			}
+			for(i=0; i<42; i++)
+			{
+				for(k=0; k<5; k++)
+				{
+					world[i][0+k][0] = 2;
+					world[i][0+k][41] = 2;
+				}
+			}
 
-	createPlayer(0, 52.0, 27.0, 52.0, 0.0);
-	setPlayerPosition(0, 1.0, 25.0, 4.0, 0.0);
-	setViewPosition(-1.25, -25.0, -1.0);
-	setViewOrientation(0.0, 172.0, .0);
+			for(i=0; i<42; i++)
+			{
+				for(k=0; k<5; k++)
+				{
+					world[0][0+k][i] = 2;
+					world[41][0+k][i] = 2;
+				}
+			}
 
-	}
+			/*createPlayer(0, 52.0, 27.0, 52.0, 0.0);
+			setPlayerPosition(0, 1.0, 1, 4.0, 0.0);*/
+			setViewPosition(-1.5, -1.0, -1.0);
+			setViewOrientation(0.0, 180.0, .0);
+			world[3][1][3] = 1;
+
+			/*
+			Generate pillars every 6 spaces
+			*/
+			for(i=6; i<42; i+=6)
+			{
+				for(j=6; j<42; j+=6)
+				{
+					pillar_array[l].x = i;
+					pillar_array[l].y = j;
+					pillar_array[l].nwall = 0;
+					pillar_array[l].swall = 0;
+					pillar_array[l].ewall = 0;
+					pillar_array[l].wwall = 0;
+					for(k=0; k<5; k++)
+					{
+						world[i][0+k][j] = 2;
+					}
+					l++;
+				}
+			}
+   }
 
 
 	/* starts the graphics processing loop */

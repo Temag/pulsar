@@ -13,3 +13,11 @@ GLubyte  world[WORLDX][WORLDY][WORLDZ];
 
 #define MAX_DISPLAY_LIST 500000
 
+typedef struct pillars{
+  int x;
+  int y;
+  int nwall;
+  int swall;
+  int ewall;
+  int wwall;
+}pillar;
