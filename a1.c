@@ -81,6 +81,8 @@ extern int total_walls;
 
 extern int wall_toggle;
 
+extern int new_wall_toggle;
+
 extern int old_wall_index;
 
 extern int old_offset;
@@ -106,7 +108,7 @@ void collisionResponse() {
 	/* your collision code goes here */
 	float *x = malloc(sizeof(float)), *y = malloc(sizeof(float)), *z = malloc(sizeof(float));
 	int fx, fy, fz, rx, ry, rz;
-    
+
 	getViewPosition(x, y, z);
 	fx = (int)(*x * -1);
 	fy = (int)(*y * -1);
@@ -240,15 +242,16 @@ float *la;
        if(wall_toggle == 0)
        {
            wall_toggle = 1;
+					 new_wall_toggle = 0;
            chooseWall();
        }
-       
+
        if(clock() - before > 100000)
        {
            before = clock();
            moveWall();
        }
-       
+
        collisionResponse();
    }
 }
@@ -411,7 +414,7 @@ int i, j, k, l=0, r;
                    wall_array[total_walls].current_length = 5;
                    total_walls++;
                }
-               
+
                /*
                 Generates walls running in the X direction (perpendicular to starting orientation)
                 */
@@ -436,7 +439,7 @@ int i, j, k, l=0, r;
             }
        }
    }
-    
+
     /*chooseWall();
     printf("index: %d, direction: %d, NW Direciton: %d\n", old_wall_index, wall_array[old_wall_index].direction, new_wall.direction);*/
 	/* starts the graphics processing loop */
