@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "a1.h"
 
 #include "Game_Engine/graphics.h"
 
@@ -76,9 +77,23 @@ extern float corners[4][3];
 extern void ExtractFrustum();
 extern void tree(float, float, float, float, float, float, int);
 
-/********* end of extern variable declarations **************/
+extern int total_walls;
 
-pillar pillar_array[36];
+extern int wall_toggle;
+
+extern int old_wall_index;
+
+extern int old_offset;
+
+extern int new_offset;
+
+extern clock_t before;
+
+extern wall new_wall;
+
+extern wall wall_array[30];
+
+/********* end of extern variable declarations **************/
 
 	/*** collisionResponse() ***/
 	/* -performs collision detection and response */
@@ -91,7 +106,7 @@ void collisionResponse() {
 	/* your collision code goes here */
 	float *x = malloc(sizeof(float)), *y = malloc(sizeof(float)), *z = malloc(sizeof(float));
 	int fx, fy, fz, rx, ry, rz;
-
+    
 	getViewPosition(x, y, z);
 	fx = (int)(*x * -1);
 	fy = (int)(*y * -1);
@@ -117,7 +132,7 @@ void collisionResponse() {
 	/*Gravity
 	Reduces camera height on each update until collision detection would take over
 	*/
-	else if(world[fx][(int)(*y+0.1)*-1][fz] == 0)
+	else if(world[fx][(int)(*y+0.1)*-1][fz] == 0 && flycontrol != 1)
 	{
 		setViewPosition(*x, *y+0.1, *z);
 		getOldViewPosition(x, y, z);
@@ -222,9 +237,21 @@ float *la;
 
 	/* your code goes here */
 			/* Move Character*/
+       if(wall_toggle == 0)
+       {
+           wall_toggle = 1;
+           chooseWall();
+       }
+       
+       if(clock() - before > 100000)
+       {
+           before = clock();
+           moveWall();
+       }
+       
+       collisionResponse();
    }
 }
-
 
 	/* called by GLUT when a mouse button is pressed or released */
 	/* -button indicates which button was pressed or released */
@@ -252,7 +279,7 @@ void mouse(int button, int state, int x, int y) {
 
 int main(int argc, char** argv)
 {
-int i, j, k, l=0;
+int i, j, k, l=0, r;
 	/* initialize the graphics system */
    graphicsInit(&argc, argv);
 
@@ -305,40 +332,41 @@ int i, j, k, l=0;
 
 	/* your code to build the world goes here */
 	/* initialize world to empty */
-
+       srand(time(NULL));
+       before = clock();
       for(i=0; i<WORLDX; i++)
          for(j=0; j<WORLDY; j++)
             for(k=0; k<WORLDZ; k++)
                world[i][j][k] = 0;
 
-			for(i=0; i<42; i++)
+			for(i=0; i<43; i++)
 			{
-				for(j=0; j<42; j++)
+				for(j=0; j<43; j++)
 				{
 						world[i][0][j] = 1;
 				}
 			}
-			for(i=0; i<42; i++)
+			for(i=0; i<43; i++)
 			{
 				for(k=0; k<5; k++)
 				{
 					world[i][0+k][0] = 2;
-					world[i][0+k][41] = 2;
+					world[i][0+k][42] = 2;
 				}
 			}
 
-			for(i=0; i<42; i++)
+			for(i=0; i<43; i++)
 			{
 				for(k=0; k<5; k++)
 				{
 					world[0][0+k][i] = 2;
-					world[41][0+k][i] = 2;
+					world[42][0+k][i] = 2;
 				}
 			}
 
 			/*createPlayer(0, 52.0, 27.0, 52.0, 0.0);
 			setPlayerPosition(0, 1.0, 1, 4.0, 0.0);*/
-			setViewPosition(-1.5, -1.0, -1.0);
+			setViewPosition(-1.0, -1.0, -1.0);
 			setViewOrientation(0.0, 180.0, .0);
 			world[3][1][3] = 1;
 
@@ -349,22 +377,68 @@ int i, j, k, l=0;
 			{
 				for(j=6; j<42; j+=6)
 				{
-					pillar_array[l].x = i;
-					pillar_array[l].y = j;
-					pillar_array[l].nwall = 0;
-					pillar_array[l].swall = 0;
-					pillar_array[l].ewall = 0;
-					pillar_array[l].wwall = 0;
-					for(k=0; k<5; k++)
+					/*pillar_array[l].x = i;
+					pillar_array[l].y = j;*/
+					for(k=1; k<5; k++)
 					{
-						world[i][0+k][j] = 2;
+						world[j][k][i] = 2;
 					}
-					l++;
+					//l++;
 				}
 			}
+       for(i=6; i<48; i+=6)
+       {
+           for(j=6; j<42; j+=6)
+           {
+               /*
+                Generates walls running in the Z direction (parallel with starting orientation)
+                */
+               r = rand() % 3;
+               if(r == 1 && total_walls < 30)
+               {
+                   for(k=5; k>0; k--)
+                   {
+                       for(l=1; l<5; l++)
+                       {
+                           world[j][l][i-k] = 2;
+                       }
+                   }
+                   wall_array[total_walls].start[0] = j;
+                   wall_array[total_walls].start[1] = i;
+                   wall_array[total_walls].end[0] = j;
+                   wall_array[total_walls].end[1] = i-5;
+                   wall_array[total_walls].direction = DOWN;
+                   wall_array[total_walls].current_length = 5;
+                   total_walls++;
+               }
+               
+               /*
+                Generates walls running in the X direction (perpendicular to starting orientation)
+                */
+               r = rand() % 3;
+               if(r == 1 && total_walls < 30)
+               {
+                   for(k=5; k>0; k--)
+                   {
+                       for(l=1; l<5; l++)
+                       {
+                           world[i-k][l][j] = 2;
+                       }
+                   }
+                   wall_array[total_walls].start[0] = i;
+                   wall_array[total_walls].start[1] = j;
+                   wall_array[total_walls].end[0] = i-5;
+                   wall_array[total_walls].end[1] = j;
+                   wall_array[total_walls].direction = RIGHT;
+                   wall_array[total_walls].current_length = 5;
+                   total_walls++;
+               }
+            }
+       }
    }
-
-
+    
+    /*chooseWall();
+    printf("index: %d, direction: %d, NW Direciton: %d\n", old_wall_index, wall_array[old_wall_index].direction, new_wall.direction);*/
 	/* starts the graphics processing loop */
 	/* code after this will not run until the program exits */
    glutMainLoop();
