@@ -365,28 +365,28 @@ int i, j, k, l=0, r;
             for(k=0; k<WORLDZ; k++)
                world[i][j][k] = 0;
 
-			for(i=0; i<43; i++)
+			for(i=0; i<37; i++)
 			{
-				for(j=0; j<43; j++)
+				for(j=0; j<37; j++)
 				{
 						world[i][0][j] = 1;
 				}
 			}
-			for(i=0; i<43; i++)
+			for(i=0; i<37; i++)
 			{
 				for(k=0; k<5; k++)
 				{
 					world[i][0+k][0] = 2;
-					world[i][0+k][42] = 2;
+					world[i][0+k][36] = 2;
 				}
 			}
 
-			for(i=0; i<43; i++)
+			for(i=0; i<36; i++)
 			{
 				for(k=0; k<5; k++)
 				{
 					world[0][0+k][i] = 2;
-					world[42][0+k][i] = 2;
+					world[36][0+k][i] = 2;
 				}
 			}
 
@@ -394,14 +394,25 @@ int i, j, k, l=0, r;
 			setPlayerPosition(0, 1.0, 1, 4.0, 0.0);*/
 			setViewPosition(-2.0, -1.0, -2.0);
 			setViewOrientation(0.0, 180.0, .0);
-			world[3][1][3] = 1;
+			/*
+			Stacked blocks to test gravity and whether the camera properly moves up
+			when there is a free space above a single block
+			*/
+			world[3][1][3] = 3;
+
+			world[3][1][4] = 3;
+			world[3][2][4] = 3;
+
+			world[4][1][4] = 3;
+			world[4][2][4] = 3;
+			world[4][3][4] = 3;
 
 			/*
 			Generate pillars every 6 spaces
 			*/
-			for(i=6; i<42; i+=6)
+			for(i=6; i<36; i+=6)
 			{
-				for(j=6; j<42; j+=6)
+				for(j=6; j<36; j+=6)
 				{
 					/*pillar_array[l].x = i;
 					pillar_array[l].y = j;*/
@@ -412,14 +423,14 @@ int i, j, k, l=0, r;
 					//l++;
 				}
 			}
-       for(i=6; i<48; i+=6)
+       for(i=6; i<42; i+=6)
        {
-           for(j=6; j<42; j+=6)
+           for(j=6; j<36; j+=6)
            {
                /*
                 Generates walls running in the Z direction (parallel with starting orientation)
                 */
-               r = rand() % 3;
+               r = rand() % 2;
                if(r == 1 && total_walls < 30)
                {
                    for(k=5; k>0; k--)
@@ -441,7 +452,7 @@ int i, j, k, l=0, r;
                /*
                 Generates walls running in the X direction (perpendicular to starting orientation)
                 */
-               r = rand() % 3;
+               r = rand() % 2;
                if(r == 1 && total_walls < 30)
                {
                    for(k=5; k>0; k--)

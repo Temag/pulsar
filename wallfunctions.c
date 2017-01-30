@@ -34,9 +34,9 @@ void chooseWall()
      parameteres
      Assigns new direction for the new wall or exits the function walls already exist on all other sides
      */
-    if(wall_array[old_wall_index].start[0] == 42)
+    if(wall_array[old_wall_index].start[0] == 36)
     {
-        new_wall.start[0] = 36;
+        new_wall.start[0] = 30;
         new_wall.start[1] = wall_array[old_wall_index].start[1];
         new_wall.current_length = 0;
 
@@ -57,10 +57,10 @@ void chooseWall()
           wall_toggle = 1;
         }
     }
-    else if(wall_array[old_wall_index].start[1] == 42)
+    else if(wall_array[old_wall_index].start[1] == 36)
     {
         new_wall.start[0] = wall_array[old_wall_index].start[0];
-        new_wall.start[1] = 36;
+        new_wall.start[1] = 30;
         new_wall.current_length = 0;
 
         if(world[new_wall.start[0]+1][1][new_wall.start[1]] == 0)
@@ -180,12 +180,12 @@ void chooseWall()
 void moveWall()
 {
     int i, j, k;
-    if(wall_array[old_wall_index].start[0] == 42)
+    if(wall_array[old_wall_index].start[0] == 36)
     {
-        world[36+old_offset][1][wall_array[old_wall_index].start[1]] = 0;
-        world[36+old_offset][2][wall_array[old_wall_index].start[1]] = 0;
-        world[36+old_offset][3][wall_array[old_wall_index].start[1]] = 0;
-        world[36+old_offset][4][wall_array[old_wall_index].start[1]] = 0;
+        world[30+old_offset][1][wall_array[old_wall_index].start[1]] = 0;
+        world[30+old_offset][2][wall_array[old_wall_index].start[1]] = 0;
+        world[30+old_offset][3][wall_array[old_wall_index].start[1]] = 0;
+        world[30+old_offset][4][wall_array[old_wall_index].start[1]] = 0;
         switch(new_wall.direction)
         {
           case 1:
@@ -211,12 +211,12 @@ void moveWall()
         old_offset--;
         new_offset++;
     }
-    else if(wall_array[old_wall_index].start[1] == 42)
+    else if(wall_array[old_wall_index].start[1] == 36)
     {
-        world[wall_array[old_wall_index].start[0]][1][36+old_offset] = 0;
-        world[wall_array[old_wall_index].start[0]][2][36+old_offset] = 0;
-        world[wall_array[old_wall_index].start[0]][3][36+old_offset] = 0;
-        world[wall_array[old_wall_index].start[0]][4][36+old_offset] = 0;
+        world[wall_array[old_wall_index].start[0]][1][30+old_offset] = 0;
+        world[wall_array[old_wall_index].start[0]][2][30+old_offset] = 0;
+        world[wall_array[old_wall_index].start[0]][3][30+old_offset] = 0;
+        world[wall_array[old_wall_index].start[0]][4][30+old_offset] = 0;
 
         switch(new_wall.direction)
         {
