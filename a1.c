@@ -129,13 +129,39 @@ void collisionResponse() {
 			setViewPosition(*x, *y, *z);
 		}
 	}
-	/*Gravity
-	Reduces camera height on each update until collision detection would take over
-	*/
 	else if(world[fx][(int)(*y+0.1)*-1][fz] == 0 && flycontrol != 1)
 	{
+		/*Gravity
+		Reduces camera height on each update until collision detection would take over
+		*/
 		setViewPosition(*x, *y+0.1, *z);
 		getOldViewPosition(x, y, z);
+	}
+
+	/*
+	Collision response for moving walls, if a wall runs over the player the player
+	will be moved to the side rather than being trapped within the wall
+	*/
+	getViewPosition(x, y , z);
+	fx = (int)(*x * -1);
+	fy = (int)(*y * -1);
+	fz = (int)(*z * -1);
+
+	if(world[fx][fy][fz] != 0 && world[fx+1][fy][fz] == 0)
+	{
+		setViewPosition((fx*-1)-1.5, (fy*-1), (fz*-1));
+	}
+	else if (world[fx][fy][fz] != 0 && world[fx-1][fy][fz] == 0)
+	{
+		setViewPosition((fx*-1)+1, (fy*-1), (fz*-1));
+	}
+	else if(world[fx][fy][fz] != 0 && world[fx][fy][fz+1] == 0)
+	{
+		setViewPosition((fx*-1), (fy*-1), (fz*-1)-1.5);
+	}
+	else if(world[fx][fy][fz] != 0 && world[fx][fy][fz-1] == 0)
+	{
+		setViewPosition((fx*-1), (fy*-1), (fz*-1)+1.5);
 	}
 
 	free(x);
@@ -243,7 +269,7 @@ float *la;
            chooseWall();
        }
 
-       if(clock() - before > 100000)
+       if(clock() - before > 50000)
        {
            before = clock();
            moveWall();
@@ -366,7 +392,7 @@ int i, j, k, l=0, r;
 
 			/*createPlayer(0, 52.0, 27.0, 52.0, 0.0);
 			setPlayerPosition(0, 1.0, 1, 4.0, 0.0);*/
-			setViewPosition(-1.0, -1.0, -1.0);
+			setViewPosition(-2.0, -1.0, -2.0);
 			setViewOrientation(0.0, 180.0, .0);
 			world[3][1][3] = 1;
 
