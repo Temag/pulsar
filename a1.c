@@ -418,7 +418,7 @@ int i, j, k, l=0, r;
 					pillar_array[l].y = j;*/
 					for(k=1; k<5; k++)
 					{
-						world[j][k][i] = 2;
+						world[j][k][i] = 5;
 					}
 					//l++;
 				}
