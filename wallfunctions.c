@@ -10,8 +10,6 @@ int total_walls = 0;
 
 int wall_toggle = 0;
 
-int new_wall_toggle = 0;
-
 int old_wall_index;
 
 int old_offset = 5;
@@ -34,13 +32,14 @@ void chooseWall()
      Two special cases where the walls starting indeces are the outside wall rather than a pillar
      Changes the starting indeces to that of the closest pillar and generates the new wall using those
      parameteres
+     Assigns new direction for the new wall or exits the function walls already exist on all other sides
      */
     if(wall_array[old_wall_index].start[0] == 42)
     {
         new_wall.start[0] = 36;
         new_wall.start[1] = wall_array[old_wall_index].start[1];
         new_wall.current_length = 0;
-        
+
         if(world[new_wall.start[0]-1][1][new_wall.start[1]] == 0)
         {
           new_wall.direction = RIGHT;
@@ -89,7 +88,8 @@ void chooseWall()
         new_wall.current_length = 0;
 
         /*
-         Ignores the direction the old wall was running randomly assigns a direction to the new wall
+         Assigns a new direction for the new wall to be used by the move function, or exits the function because
+         walls already exist in all other directions
          */
         if(wall_array[old_wall_index].direction == UP)
         {
@@ -174,7 +174,9 @@ void chooseWall()
     }
 }
 
+/*
 
+*/
 void moveWall()
 {
     int i, j, k;
@@ -184,30 +186,28 @@ void moveWall()
         world[36+old_offset][2][wall_array[old_wall_index].start[1]] = 0;
         world[36+old_offset][3][wall_array[old_wall_index].start[1]] = 0;
         world[36+old_offset][4][wall_array[old_wall_index].start[1]] = 0;
-        if(new_wall_toggle == 0)
+        switch(new_wall.direction)
         {
-          switch(new_wall.direction)
-          {
-            case 1:
-                world[new_wall.start[0]-new_offset][1][new_wall.start[1]] = 2;
-                world[new_wall.start[0]-new_offset][2][new_wall.start[1]] = 2;
-                world[new_wall.start[0]-new_offset][3][new_wall.start[1]] = 2;
-                world[new_wall.start[0]-new_offset][4][new_wall.start[1]] = 2;
-                break;
-            case 2:
-                world[new_wall.start[0]][1][new_wall.start[1]+new_offset] = 2;
-                world[new_wall.start[0]][2][new_wall.start[1]+new_offset] = 2;
-                world[new_wall.start[0]][3][new_wall.start[1]+new_offset] = 2;
-                world[new_wall.start[0]][4][new_wall.start[1]+new_offset] = 2;
-                break;
-            case 3:
-                world[new_wall.start[0]][1][new_wall.start[1]-new_offset] = 2;
-                world[new_wall.start[0]][2][new_wall.start[1]-new_offset] = 2;
-                world[new_wall.start[0]][3][new_wall.start[1]-new_offset] = 2;
-                world[new_wall.start[0]][4][new_wall.start[1]-new_offset] = 2;
-                break;
-          }
+          case 1:
+              world[new_wall.start[0]-new_offset][1][new_wall.start[1]] = 2;
+              world[new_wall.start[0]-new_offset][2][new_wall.start[1]] = 2;
+              world[new_wall.start[0]-new_offset][3][new_wall.start[1]] = 2;
+              world[new_wall.start[0]-new_offset][4][new_wall.start[1]] = 2;
+              break;
+          case 2:
+              world[new_wall.start[0]][1][new_wall.start[1]+new_offset] = 2;
+              world[new_wall.start[0]][2][new_wall.start[1]+new_offset] = 2;
+              world[new_wall.start[0]][3][new_wall.start[1]+new_offset] = 2;
+              world[new_wall.start[0]][4][new_wall.start[1]+new_offset] = 2;
+              break;
+          case 3:
+              world[new_wall.start[0]][1][new_wall.start[1]-new_offset] = 2;
+              world[new_wall.start[0]][2][new_wall.start[1]-new_offset] = 2;
+              world[new_wall.start[0]][3][new_wall.start[1]-new_offset] = 2;
+              world[new_wall.start[0]][4][new_wall.start[1]-new_offset] = 2;
+              break;
         }
+
         old_offset--;
         new_offset++;
     }
@@ -217,30 +217,29 @@ void moveWall()
         world[wall_array[old_wall_index].start[0]][2][36+old_offset] = 0;
         world[wall_array[old_wall_index].start[0]][3][36+old_offset] = 0;
         world[wall_array[old_wall_index].start[0]][4][36+old_offset] = 0;
-        if(new_wall_toggle == 0)
+
+        switch(new_wall.direction)
         {
-          switch(new_wall.direction)
-          {
-            case 0:
-                world[new_wall.start[0]+new_offset][1][new_wall.start[1]] = 2;
-                world[new_wall.start[0]+new_offset][2][new_wall.start[1]] = 2;
-                world[new_wall.start[0]+new_offset][3][new_wall.start[1]] = 2;
-                world[new_wall.start[0]+new_offset][4][new_wall.start[1]] = 2;
-                break;
-            case 1:
-                world[new_wall.start[0]-new_offset][1][new_wall.start[1]] = 2;
-                world[new_wall.start[0]-new_offset][2][new_wall.start[1]] = 2;
-                world[new_wall.start[0]-new_offset][3][new_wall.start[1]] = 2;
-                world[new_wall.start[0]-new_offset][4][new_wall.start[1]] = 2;
-                break;
-            case 2:
-                world[new_wall.start[0]][1][new_wall.start[1]+new_offset] = 2;
-                world[new_wall.start[0]][2][new_wall.start[1]+new_offset] = 2;
-                world[new_wall.start[0]][3][new_wall.start[1]+new_offset] = 2;
-                world[new_wall.start[0]][4][new_wall.start[1]+new_offset] = 2;
-                break;
-          }
+          case 0:
+              world[new_wall.start[0]+new_offset][1][new_wall.start[1]] = 2;
+              world[new_wall.start[0]+new_offset][2][new_wall.start[1]] = 2;
+              world[new_wall.start[0]+new_offset][3][new_wall.start[1]] = 2;
+              world[new_wall.start[0]+new_offset][4][new_wall.start[1]] = 2;
+              break;
+          case 1:
+              world[new_wall.start[0]-new_offset][1][new_wall.start[1]] = 2;
+              world[new_wall.start[0]-new_offset][2][new_wall.start[1]] = 2;
+              world[new_wall.start[0]-new_offset][3][new_wall.start[1]] = 2;
+              world[new_wall.start[0]-new_offset][4][new_wall.start[1]] = 2;
+              break;
+          case 2:
+              world[new_wall.start[0]][1][new_wall.start[1]+new_offset] = 2;
+              world[new_wall.start[0]][2][new_wall.start[1]+new_offset] = 2;
+              world[new_wall.start[0]][3][new_wall.start[1]+new_offset] = 2;
+              world[new_wall.start[0]][4][new_wall.start[1]+new_offset] = 2;
+              break;
         }
+
         old_offset--;
         new_offset++;
     }
@@ -273,36 +272,35 @@ void moveWall()
                 world[wall_array[old_wall_index].start[0]][4][wall_array[old_wall_index].start[1]-old_offset] = 0;
                 break;
         }
-        if(new_wall_toggle == 0)
+
+        switch(new_wall.direction)
         {
-          switch(new_wall.direction)
-          {
-            case 0:
-                world[new_wall.start[0]+new_offset][1][new_wall.start[1]] = 2;
-                world[new_wall.start[0]+new_offset][2][new_wall.start[1]] = 2;
-                world[new_wall.start[0]+new_offset][3][new_wall.start[1]] = 2;
-                world[new_wall.start[0]+new_offset][4][new_wall.start[1]] = 2;
-                break;
-            case 1:
-                world[new_wall.start[0]-new_offset][1][new_wall.start[1]] = 2;
-                world[new_wall.start[0]-new_offset][2][new_wall.start[1]] = 2;
-                world[new_wall.start[0]-new_offset][3][new_wall.start[1]] = 2;
-                world[new_wall.start[0]-new_offset][4][new_wall.start[1]] = 2;
-                break;
-            case 2:
-                world[new_wall.start[0]][1][new_wall.start[1]+new_offset] = 2;
-                world[new_wall.start[0]][2][new_wall.start[1]+new_offset] = 2;
-                world[new_wall.start[0]][3][new_wall.start[1]+new_offset] = 2;
-                world[new_wall.start[0]][4][new_wall.start[1]+new_offset] = 2;
-                break;
-            case 3:
-                world[new_wall.start[0]][1][new_wall.start[1]-new_offset] = 2;
-                world[new_wall.start[0]][2][new_wall.start[1]-new_offset] = 2;
-                world[new_wall.start[0]][3][new_wall.start[1]-new_offset] = 2;
-                world[new_wall.start[0]][4][new_wall.start[1]-new_offset] = 2;
-                break;
-          }
+          case 0:
+              world[new_wall.start[0]+new_offset][1][new_wall.start[1]] = 2;
+              world[new_wall.start[0]+new_offset][2][new_wall.start[1]] = 2;
+              world[new_wall.start[0]+new_offset][3][new_wall.start[1]] = 2;
+              world[new_wall.start[0]+new_offset][4][new_wall.start[1]] = 2;
+              break;
+          case 1:
+              world[new_wall.start[0]-new_offset][1][new_wall.start[1]] = 2;
+              world[new_wall.start[0]-new_offset][2][new_wall.start[1]] = 2;
+              world[new_wall.start[0]-new_offset][3][new_wall.start[1]] = 2;
+              world[new_wall.start[0]-new_offset][4][new_wall.start[1]] = 2;
+              break;
+          case 2:
+              world[new_wall.start[0]][1][new_wall.start[1]+new_offset] = 2;
+              world[new_wall.start[0]][2][new_wall.start[1]+new_offset] = 2;
+              world[new_wall.start[0]][3][new_wall.start[1]+new_offset] = 2;
+              world[new_wall.start[0]][4][new_wall.start[1]+new_offset] = 2;
+              break;
+          case 3:
+              world[new_wall.start[0]][1][new_wall.start[1]-new_offset] = 2;
+              world[new_wall.start[0]][2][new_wall.start[1]-new_offset] = 2;
+              world[new_wall.start[0]][3][new_wall.start[1]-new_offset] = 2;
+              world[new_wall.start[0]][4][new_wall.start[1]-new_offset] = 2;
+              break;
         }
+
         old_offset--;
         new_offset++;
     }

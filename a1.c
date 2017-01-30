@@ -81,8 +81,6 @@ extern int total_walls;
 
 extern int wall_toggle;
 
-extern int new_wall_toggle;
-
 extern int old_wall_index;
 
 extern int old_offset;
@@ -242,7 +240,6 @@ float *la;
        if(wall_toggle == 0)
        {
            wall_toggle = 1;
-					 new_wall_toggle = 0;
            chooseWall();
        }
 
