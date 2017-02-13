@@ -112,13 +112,27 @@ void collisionResponse() {
 	fy = (int)(*y * -1);
 	fz = (int)(*z * -1);
 
+	/*
+	World Collision
+	Checks if the new position is outside of the existing world, if not allows the
+	allows the camera to move otherwise returns the camera to the precious position
+	*/
+	if(fx>=99 || fx<=0 || fy>=49 || fy<=0 || fz>=99 || fz<=0)
+	{
+		getOldViewPosition(x, y, z);
+		setViewPosition(*x, *y, *z);
+	}
 
-	/*Collision detection
+	/*
+	Wall Collision detection
 	Checks if the new position contains a block, if not allows the camera to move
 	otherwise returns the camera to the previous position
 	*/
-	if(world[fx][fy][fz] != 0)
+	else if(world[fx][fy][fz] != 0)
 	{
+		/*
+		If the position above the block is empty moves the camera ontop of the block
+		*/
 		if(world[fx][fy+1][fz] == 0)
 		{
 			setViewPosition(*x, *y-1, *z);
@@ -131,7 +145,8 @@ void collisionResponse() {
 	}
 	else if(world[fx][(int)(*y+0.1)*-1][fz] == 0 && flycontrol != 1)
 	{
-		/*Gravity
+		/*
+		Gravity
 		Reduces camera height on each update until collision detection would take over
 		*/
 		setViewPosition(*x, *y+0.1, *z);

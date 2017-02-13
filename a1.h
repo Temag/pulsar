@@ -5,7 +5,7 @@ typedef struct walls{
     int end[2];
     int direction;
     int current_length;
-    
+
 }wall;
 
 enum wall_direction{
@@ -15,8 +15,3 @@ enum wall_direction{
 void chooseWall();
 
 void moveWall();
-
-/*typedef struct pillars{
- int x;
- int y;
- }pillar;*/
