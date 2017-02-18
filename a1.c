@@ -95,6 +95,11 @@ extern wall wall_array[30];
 
 /********* end of extern variable declarations **************/
 
+float px, py, pz, angle, xratio, zratio;
+
+int projectile_flag;
+
+
 	/*** collisionResponse() ***/
 	/* -performs collision detection and response */
 	/*  sets new xyz  to position of the viewpoint after collision */
@@ -154,6 +159,20 @@ void collisionResponse() {
 	}
 
 	/*
+	Collision response for projectile hitting a wall
+	*/
+	if(world[(int)px][(int)py][(int)pz] == 2)
+	{
+		world[(int)px][(int)py][(int)pz] = 0;
+		hideMob(0);
+		projectile_flag = 0;
+	}
+	else if (px>=99 || px<=0 || py>=49 || py<=0 || pz>=99 || pz<=0)
+	{
+		hideMob(0);
+		projectile_flag = 0;
+	}
+	/*
 	Collision response for moving walls, if a wall runs over the player the player
 	will be moved to the side rather than being trapped within the wall
 	*/
@@ -206,8 +225,18 @@ void draw2D() {
       set2Dcolour(black);
       draw2Dbox(500, 380, 524, 388);
    } else {
+		 GLfloat green[] = {0.0, 0.5, 0.0, 1.0};
+		 GLfloat black[] = {0.0, 0.0, 0.0, 0.5};
+		 GLfloat blue[] = {0.0, 0.0, 0.5, 1.0};
 
-	/* your code goes here */
+		 set2Dcolour(green);
+		 draw2Dbox(793, 456, 1015, 678);
+
+		 /*Should add 6 to the starting positions of the green field to account for the
+		 space the walls will take up. Remember 6x6 pixel area accounts for 1 block in
+		 the game world*/
+		 set2Dcolour(blue);
+		 //draw2Dline(800, 456, 800, 684, 6);
 
    }
 
@@ -284,13 +313,20 @@ float *la;
            chooseWall();
        }
 
-       if(clock() - before > 50000)
+       if((float)(clock() - before)/(float)CLOCKS_PER_SEC > 0.25)
        {
            before = clock();
            moveWall();
        }
+			 if(projectile_flag == 1)
+			 {
+			 	px = px + (0.25 * xratio);
+				pz = pz + (0.25 * zratio);
 
-       collisionResponse();
+				setMobPosition(0, px, py, pz, angle);
+			 }
+
+			 collisionResponse();
    }
 }
 
@@ -300,20 +336,50 @@ float *la;
 	/* -x,y are the screen coordinates when the mouse is pressed or */
 	/*  released */
 void mouse(int button, int state, int x, int y) {
+	float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float));
+	float *rx = malloc(sizeof(float)), *ry = malloc(sizeof(float)), *rz = malloc(sizeof(float));
 
-   if (button == GLUT_LEFT_BUTTON)
-      printf("left button - ");
-   else if (button == GLUT_MIDDLE_BUTTON)
-      printf("middle button - ");
-   else
-      printf("right button - ");
+	if (button == GLUT_LEFT_BUTTON)
+	{
+		getViewPosition(fx, fy, fz);
+		px = -*fx;
+		py = -*fy;
+		pz = -*fz;
 
-   if (state == GLUT_UP)
-      printf("up - ");
-   else
-      printf("down - ");
+		getViewOrientation(rx, ry, rz);
+		if(*ry < 0)
+		{
+			angle = ((int)*ry % 360) + 360;
+		}
+		else
+		{
+			angle = (int)*ry % 360;
+		}
+		printf("angle = %lf\n", angle);
+		createMob(0, -*fx, -*fy, -*fz, angle);
+		xratio = sin(angle*M_PI/180);
+	  zratio = -cos(angle*M_PI/180);
+		printf("xratio = %lf zratio = %lf\n", xratio, zratio);
+		projectile_flag = 1;
+	}
 
-   printf("%d %d\n", x, y);
+	/*free(fx);
+	free(fy);
+	free(fz);
+	free(rx);
+	free(ry);
+	free(rz);*/
+
+	/*else if (button == GLUT_MIDDLE_BUTTON)
+	  printf("middle button - ");
+	else*.
+
+	/*if (state == GLUT_UP)
+	  printf("up - ");
+	else
+	  printf("down - ");
+
+	printf("%d %d\n", x, y);*/
 }
 
 
