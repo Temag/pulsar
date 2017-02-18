@@ -97,7 +97,7 @@ extern wall wall_array[30];
 
 float px, py, pz, angle, xratio, zratio;
 
-int projectile_flag;
+int projectile_flag, first_time = 1;
 
 
 	/*** collisionResponse() ***/
@@ -225,21 +225,111 @@ void draw2D() {
       set2Dcolour(black);
       draw2Dbox(500, 380, 524, 388);
    } else {
+		 int i, j;
+		 int x, y, z;
+		 float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float));
+		 float *rx = malloc(sizeof(float)), *ry = malloc(sizeof(float)), *rz = malloc(sizeof(float));
+		 float tx, tz;
+		 /*Create colour variables*/
 		 GLfloat green[] = {0.0, 0.5, 0.0, 1.0};
 		 GLfloat black[] = {0.0, 0.0, 0.0, 0.5};
 		 GLfloat blue[] = {0.0, 0.0, 0.5, 1.0};
+		 GLfloat white[] = {0.5, 0.5, 0.5, 1.0};
+		 GLfloat yellow[] = {255.0, 255.5, 0.0, 1.0};
+		 if(displayMap == 1)
+		 {
+			 /*Draw player*/
+			 set2Dcolour(yellow);
+			 getOldViewPosition(rx, ry, rz);
+			 getViewPosition(fx, fy, fz);
 
-		 set2Dcolour(green);
-		 draw2Dbox(793, 456, 1015, 678);
+			 x = -(int)*fx*6 + 793.0;
+			 z = -(int)*fz*6 + 459.0;
+			 draw2Dline(x, z, x+6, z, 6);
 
-		 /*Should add 6 to the starting positions of the green field to account for the
-		 space the walls will take up. Remember 6x6 pixel area accounts for 1 block in
-		 the game world*/
-		 set2Dcolour(blue);
-		 //draw2Dline(800, 456, 800, 684, 6);
+			 /*Draw permanent pillars*/
+			 set2Dcolour(white);
+			 for(i=screenWidth-195; i<screenWidth-15; i+=36)
+			 {
+				 for(j=screenHeight-192; j<screenHeight-12; j+=36)
+				 	draw2Dline(i, j, i+6, j, 6);
+			 }
 
-   }
+			 /*Draw interior walls*/
+			 set2Dcolour(blue);
+			 for(i=1; i<36; i++)
+			 {
+				 for(j=1; j<36; j++)
+				 {
+					 if(world[i][4][j] == 2)
+					 {
+						 /*Change to be offsets from screen size*/
+						 draw2Dline(screenWidth-231+(i*6), screenHeight-228+(j*6), screenWidth-225+(i*6), screenHeight-228+(j*6), 6);
+					 }
+				 }
+			 }
 
+			 /*Creates the foor of the map*/
+			 set2Dcolour(green);
+			 draw2Dbox(screenWidth-225, screenHeight-225, screenWidth-15, screenHeight-15);
+
+			 set2Dcolour(blue);/*screenWidth = 1024, screenHeight = 687*/
+			 /*Vertical exterior walls*/
+			 draw2Dline(screenWidth-228, screenHeight-231, screenWidth-228, screenHeight-9, 6);
+			 draw2Dline(screenWidth-12, screenHeight-231, screenWidth-12, screenHeight-9, 6);
+
+			 /*Horizontal exterior walls*/
+			 draw2Dline(screenWidth-231, screenHeight-228, screenWidth-9, screenHeight-228, 6);
+			 draw2Dline(screenWidth-231, screenHeight-12, screenWidth-9, screenHeight-12, 6);
+	   }
+		 else if(displayMap == 2)
+	 	{
+			/*Draw player*/
+			set2Dcolour(yellow);
+			getOldViewPosition(rx, ry, rz);
+			getViewPosition(fx, fy, fz);
+
+			x = -(int)*fx*6 + 793.0;
+			z = -(int)*fz*6 + 459.0;
+			draw2Dline(x, z, x+6, z, 6);
+
+			/*Draw permanent pillars*/
+			set2Dcolour(white);
+			for(i=screenWidth-195; i<screenWidth-15; i+=36)
+			{
+				for(j=screenHeight-192; j<screenHeight-12; j+=36)
+				 draw2Dline(i, j, i+6, j, 6);
+			}
+
+			/*Draw interior walls*/
+			set2Dcolour(blue);
+			for(i=1; i<36; i++)
+			{
+				for(j=1; j<36; j++)
+				{
+					if(world[i][4][j] == 2)
+					{
+						/*Change to be offsets from screen size*/
+						draw2Dline(screenWidth-231+(i*6), screenHeight-228+(j*6), screenWidth-225+(i*6), screenHeight-228+(j*6), 6);
+					}
+				}
+			}
+
+			/*Creates the foor of the map*/
+			set2Dcolour(green);
+			draw2Dbox(screenWidth-225, screenHeight-225, screenWidth-15, screenHeight-15);
+
+			set2Dcolour(blue);/*screenWidth = 1024, screenHeight = 687*/
+			/*Vertical exterior walls*/
+			draw2Dline(screenWidth-228, screenHeight-231, screenWidth-228, screenHeight-9, 6);
+			draw2Dline(screenWidth-12, screenHeight-231, screenWidth-12, screenHeight-9, 6);
+
+			/*Horizontal exterior walls*/
+			draw2Dline(screenWidth-231, screenHeight-228, screenWidth-9, screenHeight-228, 6);
+			draw2Dline(screenWidth-231, screenHeight-12, screenWidth-9, screenHeight-12, 6);
+		
+	 	}
+	}
 }
 
 
@@ -363,12 +453,12 @@ void mouse(int button, int state, int x, int y) {
 		projectile_flag = 1;
 	}
 
-	/*free(fx);
+	free(fx);
 	free(fy);
 	free(fz);
 	free(rx);
 	free(ry);
-	free(rz);*/
+	free(rz);
 
 	/*else if (button == GLUT_MIDDLE_BUTTON)
 	  printf("middle button - ");
@@ -495,13 +585,10 @@ int i, j, k, l=0, r;
 			{
 				for(j=6; j<36; j+=6)
 				{
-					/*pillar_array[l].x = i;
-					pillar_array[l].y = j;*/
 					for(k=1; k<5; k++)
 					{
 						world[j][k][i] = 5;
 					}
-					//l++;
 				}
 			}
        for(i=6; i<42; i+=6)
