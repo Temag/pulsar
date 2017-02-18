@@ -306,6 +306,7 @@ void draw2D() {
 			GLfloat blue[] = {0.0, 0.0, 0.5, 0.5};
 			GLfloat white[] = {0.5, 0.5, 0.5, 0.5};
 			GLfloat yellow[] = {255.0, 255.5, 0.0, 0.5};
+			
 			/*Draw player*/
 			set2Dcolour(yellow);
 			getViewPosition(fx, fy, fz);
