@@ -226,7 +226,7 @@ void draw2D() {
       draw2Dbox(500, 380, 524, 388);
    } else {
 		 int i, j;
-		 int x, y, z;
+		 float x, y, z;
 		 float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float));
 		 float tx, tz;
 		 /*
@@ -241,7 +241,7 @@ void draw2D() {
 		 {
 			 /*Create colour variables*/
 			 GLfloat green[] = {0.0, 0.5, 0.0, 1.0};
-			 GLfloat black[] = {0.0, 0.0, 0.0, 0.5};
+			 GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
 			 GLfloat blue[] = {0.0, 0.0, 0.5, 1.0};
 			 GLfloat white[] = {0.5, 0.5, 0.5, 1.0};
 			 GLfloat yellow[] = {255.0, 255.5, 0.0, 1.0};
@@ -250,9 +250,18 @@ void draw2D() {
 			 set2Dcolour(yellow);
 			 getViewPosition(fx, fy, fz);
 
-			 x = (screenWidth-15) - (-(int)*fx*6);
-			 z = -(int)*fz*6 + (screenHeight-228);
-			 draw2Dline(x, z, x+6, z, 6);
+			 *fx = (screenWidth-15) - (-*fx*6);
+			 *fz = -*fz*6 + (screenHeight-228);
+			 draw2Dbox(*fx, *fz, *fx+6, *fz-6);
+
+			 /*Draw projectile*/
+			 if(projectile_flag == 1)
+			 {
+				 set2Dcolour(black);
+				 x = (screenWidth-15) - (px*6);
+				 z = pz*6 + (screenHeight - 228);
+				 draw2Dbox(x, z, x+6, z+6);
+			 }
 
 			 /*Draw permanent pillars*/
 			 set2Dcolour(white);
@@ -293,6 +302,7 @@ void draw2D() {
 	 	{
 			/*Create colour variables*/
 			GLfloat green[] = {0.0, 0.5, 0.0, 0.5};
+			GLfloat black[] = {0.0, 0.0, 0.0, 0.5};
 			GLfloat blue[] = {0.0, 0.0, 0.5, 0.5};
 			GLfloat white[] = {0.5, 0.5, 0.5, 0.5};
 			GLfloat yellow[] = {255.0, 255.5, 0.0, 0.5};
@@ -300,9 +310,18 @@ void draw2D() {
 			set2Dcolour(yellow);
 			getViewPosition(fx, fy, fz);
 
-			x = (screenWidth-240) - (-(int)*fx*16);
-			z = -(int)*fz*16 + (screenHeight-631);
-			draw2Dbox(x, z, x+16, z-16);
+			*fx = (screenWidth-240) - (-*fx*16);
+			*fz = -*fz*16 + (screenHeight-631);
+			draw2Dbox(*fx, *fz, *fx+16, *fz-16);
+
+			/*Draw projectile*/
+			if(projectile_flag == 1)
+			{
+				set2Dcolour(black);
+				x = (screenWidth-240) - (px*16);
+				z = pz*16 + (screenHeight - 631);
+				draw2Dbox(x, z, x+16, z+16);
+			}
 
 			/*Draw permanent pillars*/
 			set2Dcolour(white);
