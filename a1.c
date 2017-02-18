@@ -167,7 +167,7 @@ void collisionResponse() {
 		hideMob(0);
 		projectile_flag = 0;
 	}
-	else if (px>=99 || px<=0 || py>=49 || py<=0 || pz>=99 || pz<=0)
+	else if (px>=99 || px<=0 || py>=49 || py<=0 || pz>=99 || pz<=0 || world[(int)px][(int)py][(int)pz] == 5)
 	{
 		hideMob(0);
 		projectile_flag = 0;
@@ -228,23 +228,30 @@ void draw2D() {
 		 int i, j;
 		 int x, y, z;
 		 float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float));
-		 float *rx = malloc(sizeof(float)), *ry = malloc(sizeof(float)), *rz = malloc(sizeof(float));
 		 float tx, tz;
-		 /*Create colour variables*/
-		 GLfloat green[] = {0.0, 0.5, 0.0, 1.0};
-		 GLfloat black[] = {0.0, 0.0, 0.0, 0.5};
-		 GLfloat blue[] = {0.0, 0.0, 0.5, 1.0};
-		 GLfloat white[] = {0.5, 0.5, 0.5, 1.0};
-		 GLfloat yellow[] = {255.0, 255.5, 0.0, 1.0};
+		 /*
+		 Note * All dynamic position (i.e. moving walls, player character etc.) calculations are done
+		 from the botom right of the screen so as to align with the direction of the world.
+		 More specifically: horizontal offsets are done from right to left (large value gets smaller) and
+		 vertical offsets are done from bottom to top (small value gets larger)
+		 screenWidth = 1024, screenHeight = 687
+		 */
+		 /*Draws a small map in the top right corner of the screen, 6x6 pixels per square*/
 		 if(displayMap == 1)
 		 {
+			 /*Create colour variables*/
+			 GLfloat green[] = {0.0, 0.5, 0.0, 1.0};
+			 GLfloat black[] = {0.0, 0.0, 0.0, 0.5};
+			 GLfloat blue[] = {0.0, 0.0, 0.5, 1.0};
+			 GLfloat white[] = {0.5, 0.5, 0.5, 1.0};
+			 GLfloat yellow[] = {255.0, 255.5, 0.0, 1.0};
+
 			 /*Draw player*/
 			 set2Dcolour(yellow);
-			 getOldViewPosition(rx, ry, rz);
 			 getViewPosition(fx, fy, fz);
 
-			 x = -(int)*fx*6 + 793.0;
-			 z = -(int)*fz*6 + 459.0;
+			 x = (screenWidth-15) - (-(int)*fx*6);
+			 z = -(int)*fz*6 + (screenHeight-228);
 			 draw2Dline(x, z, x+6, z, 6);
 
 			 /*Draw permanent pillars*/
@@ -263,17 +270,16 @@ void draw2D() {
 				 {
 					 if(world[i][4][j] == 2)
 					 {
-						 /*Change to be offsets from screen size*/
-						 draw2Dline(screenWidth-231+(i*6), screenHeight-228+(j*6), screenWidth-225+(i*6), screenHeight-228+(j*6), 6);
+						 draw2Dline(screenWidth-15-(i*6), screenHeight-228+(j*6), screenWidth-9-(i*6), screenHeight-228+(j*6), 6);
 					 }
 				 }
 			 }
 
-			 /*Creates the foor of the map*/
+			 /*Creates the floor of the map*/
 			 set2Dcolour(green);
 			 draw2Dbox(screenWidth-225, screenHeight-225, screenWidth-15, screenHeight-15);
 
-			 set2Dcolour(blue);/*screenWidth = 1024, screenHeight = 687*/
+			 set2Dcolour(blue);
 			 /*Vertical exterior walls*/
 			 draw2Dline(screenWidth-228, screenHeight-231, screenWidth-228, screenHeight-9, 6);
 			 draw2Dline(screenWidth-12, screenHeight-231, screenWidth-12, screenHeight-9, 6);
@@ -282,23 +288,28 @@ void draw2D() {
 			 draw2Dline(screenWidth-231, screenHeight-228, screenWidth-9, screenHeight-228, 6);
 			 draw2Dline(screenWidth-231, screenHeight-12, screenWidth-9, screenHeight-12, 6);
 	   }
+		 /*Draws a large map in center of the screen, 16x16 pixels per square*/
 		 else if(displayMap == 2)
 	 	{
+			/*Create colour variables*/
+			GLfloat green[] = {0.0, 0.5, 0.0, 0.5};
+			GLfloat blue[] = {0.0, 0.0, 0.5, 0.5};
+			GLfloat white[] = {0.5, 0.5, 0.5, 0.5};
+			GLfloat yellow[] = {255.0, 255.5, 0.0, 0.5};
 			/*Draw player*/
 			set2Dcolour(yellow);
-			getOldViewPosition(rx, ry, rz);
 			getViewPosition(fx, fy, fz);
 
-			x = -(int)*fx*6 + 793.0;
-			z = -(int)*fz*6 + 459.0;
-			draw2Dline(x, z, x+6, z, 6);
+			x = (screenWidth-240) - (-(int)*fx*16);
+			z = -(int)*fz*16 + (screenHeight-631);
+			draw2Dbox(x, z, x+16, z-16);
 
 			/*Draw permanent pillars*/
 			set2Dcolour(white);
-			for(i=screenWidth-195; i<screenWidth-15; i+=36)
+			for(i=screenWidth-720; i<screenWidth-240; i+=96)
 			{
-				for(j=screenHeight-192; j<screenHeight-12; j+=36)
-				 draw2Dline(i, j, i+6, j, 6);
+				for(j=screenHeight-551; j<screenHeight-71; j+=96)
+				 draw2Dbox(i, j, i+16, j+16);
 			}
 
 			/*Draw interior walls*/
@@ -309,26 +320,27 @@ void draw2D() {
 				{
 					if(world[i][4][j] == 2)
 					{
-						/*Change to be offsets from screen size*/
-						draw2Dline(screenWidth-231+(i*6), screenHeight-228+(j*6), screenWidth-225+(i*6), screenHeight-228+(j*6), 6);
+						//draw2Dline(screenWidth-224-(i*16), screenHeight-634+(j*16), screenWidth-208-(i*16), screenHeight-618+(j*16));
+						draw2Dbox(screenWidth-224-(i*16), screenHeight-647+(j*16), screenWidth-240-(i*16), screenHeight-631+(j*16));
 					}
 				}
 			}
-
-			/*Creates the foor of the map*/
-			set2Dcolour(green);
-			draw2Dbox(screenWidth-225, screenHeight-225, screenWidth-15, screenHeight-15);
-
-			set2Dcolour(blue);/*screenWidth = 1024, screenHeight = 687*/
 			/*Vertical exterior walls*/
-			draw2Dline(screenWidth-228, screenHeight-231, screenWidth-228, screenHeight-9, 6);
-			draw2Dline(screenWidth-12, screenHeight-231, screenWidth-12, screenHeight-9, 6);
+			set2Dcolour(blue);
+			draw2Dbox(screenWidth-816, screenHeight-647, screenWidth-800, screenHeight-55);
+			draw2Dbox(screenWidth-224, screenHeight-647, screenWidth-240, screenHeight-55);
 
 			/*Horizontal exterior walls*/
-			draw2Dline(screenWidth-231, screenHeight-228, screenWidth-9, screenHeight-228, 6);
-			draw2Dline(screenWidth-231, screenHeight-12, screenWidth-9, screenHeight-12, 6);
-		
+			draw2Dbox(screenWidth-816, screenHeight-647, screenWidth-224, screenHeight-631);
+			draw2Dbox(screenWidth-816, screenHeight-55, screenWidth-224, screenHeight-71);
+			/*Creates the floor of the map*/
+			set2Dcolour(green);
+			draw2Dbox(screenWidth-800, screenHeight-631, screenWidth-240, screenHeight-71);
+
 	 	}
+		free(fx);
+		free(fy);
+		free(fz);
 	}
 }
 
@@ -408,6 +420,10 @@ float *la;
            before = clock();
            moveWall();
        }
+			 /*I chose not to throw the projectile under a time constraint because it would
+			 pause randomly and I thought that looked weird, and the setMobPosition function
+			 didn't seem to work properly in a function outside of those provided so I couldn't
+			 use the GLUTime*/
 			 if(projectile_flag == 1)
 			 {
 			 	px = px + (0.25 * xratio);
@@ -445,11 +461,10 @@ void mouse(int button, int state, int x, int y) {
 		{
 			angle = (int)*ry % 360;
 		}
-		printf("angle = %lf\n", angle);
+
 		createMob(0, -*fx, -*fy, -*fz, angle);
 		xratio = sin(angle*M_PI/180);
 	  zratio = -cos(angle*M_PI/180);
-		printf("xratio = %lf zratio = %lf\n", xratio, zratio);
 		projectile_flag = 1;
 	}
 
@@ -462,9 +477,9 @@ void mouse(int button, int state, int x, int y) {
 
 	/*else if (button == GLUT_MIDDLE_BUTTON)
 	  printf("middle button - ");
-	else*.
+	else
 
-	/*if (state == GLUT_UP)
+	if (state == GLUT_UP)
 	  printf("up - ");
 	else
 	  printf("down - ");
@@ -565,18 +580,6 @@ int i, j, k, l=0, r;
 			setPlayerPosition(0, 1.0, 1, 4.0, 0.0);*/
 			setViewPosition(-2.0, -1.0, -2.0);
 			setViewOrientation(0.0, 180.0, .0);
-			/*
-			Stacked blocks to test gravity and whether the camera properly moves up
-			when there is a free space above a single block
-			*/
-			world[3][1][3] = 3;
-
-			world[3][1][4] = 3;
-			world[3][2][4] = 3;
-
-			world[4][1][4] = 3;
-			world[4][2][4] = 3;
-			world[4][3][4] = 3;
 
 			/*
 			Generate pillars every 6 spaces
