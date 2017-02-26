@@ -12,6 +12,26 @@ enum wall_direction{
     LEFT, RIGHT, UP, DOWN
 }direction;
 
+typedef struct{
+  int x;
+  int y;
+  int z;
+}renemy;
+
+typedef struct{
+  int x;
+  int y;
+  int z;
+}yenemy;
+
 void chooseWall();
 
 void moveWall();
+
+void drawRedEnemy(renemy e);
+
+void drawYellowEnemy(yenemy e);
+
+void eraseRedEnemy(renemy e);
+
+void eraseYellowEnemy(yenemy e);

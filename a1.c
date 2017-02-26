@@ -99,7 +99,6 @@ float px, py, pz, angle, xratio, zratio;
 
 int projectile_flag, first_time = 1;
 
-
 	/*** collisionResponse() ***/
 	/* -performs collision detection and response */
 	/*  sets new xyz  to position of the viewpoint after collision */
@@ -306,7 +305,7 @@ void draw2D() {
 			GLfloat blue[] = {0.0, 0.0, 0.5, 0.5};
 			GLfloat white[] = {0.5, 0.5, 0.5, 0.5};
 			GLfloat yellow[] = {255.0, 255.5, 0.0, 0.5};
-			
+
 			/*Draw player*/
 			set2Dcolour(yellow);
 			getViewPosition(fx, fy, fz);
@@ -487,24 +486,21 @@ void mouse(int button, int state, int x, int y) {
 	  zratio = -cos(angle*M_PI/180);
 		projectile_flag = 1;
 	}
-
 	free(fx);
 	free(fy);
 	free(fz);
 	free(rx);
 	free(ry);
 	free(rz);
-
-	/*else if (button == GLUT_MIDDLE_BUTTON)
+	/*if (button == GLUT_MIDDLE_BUTTON)
 	  printf("middle button - ");
 	else
 
 	if (state == GLUT_UP)
 	  printf("up - ");
 	else
-	  printf("down - ");
+	  printf("down - ");*/
 
-	printf("%d %d\n", x, y);*/
 }
 
 
