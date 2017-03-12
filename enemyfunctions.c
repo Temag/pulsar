@@ -1,6 +1,10 @@
 #include "a1.h"
 #include "Game_Engine/graphics.h"
 
+extern void createMob(int, float, float, float, float);
+extern void setMobPosition(int, float, float, float, float);
+extern void hideMob(int);
+extern void showMob(int);
 
 void drawEnemy(enemy e)
 {
@@ -292,6 +296,7 @@ void enemyMovement(enemy *e)
         drawEnemy(*e);
         break;
     }
+    
   }
 
   else if(e->t == YELLOW)
@@ -322,14 +327,117 @@ void enemyMovement(enemy *e)
   }
 }
 
-int lineOfSight()
+int lineOfSight(enemy e, int xend, int zend)
 {
-
+  int xdif, zdif, x, z;
+  float delta_error, error;
+  xdif = e.x - xend;
+  zdif = e.z - zend;
+  delta_error = abs(zdif/xdif);
+  error = delta_error-0.5;
+  z = e.z;
+  if(xdif < 0 && zdif < 0)
+  {
+    for(x = e.x; x<xend; x++)
+    {
+      if(world[x][e.y][z] != 2 && world[x][e.y][z] != 6)
+      {
+        return 0;
+      }
+      error = error + delta_error;
+      if(error > 0.5)
+      {
+        z = z - 1;
+        error = error + 1.0;
+      }
+    }
+  }
+  else if(xdif < 0)
+  {
+    for(x = e.x; x<xend; x++)
+    {
+      if(world[x][e.y][z] != 2 && world[x][e.y][z] != 6)
+      {
+        return 0;
+      }
+      error = error + delta_error;
+      if(error > 0.5)
+      {
+        z = z - 1;
+        error = error - 1.0;
+      }
+    }
+  }
+  else if(zdif < 0)
+  {
+    for(x = e.x; x>xend; x--)
+    {
+      if(world[x][e.y][z] != 2 && world[x][e.y][z] != 6)
+      {
+        return 0;
+      }
+      error = error + delta_error;
+      if(error > 0.5)
+      {
+        z = z + 1;
+        error = error + 1.0;
+      }
+    }
+  }
+  else
+  {
+    for(x = e.x; x>xend; x--)
+    {
+      if(world[x][e.y][z] != 2 && world[x][e.y][z] != 6)
+      {
+        return 0;
+      }
+      error = error + delta_error;
+      if(error > 0.5)
+      {
+        z = z - 1;
+        error = error - 1.0;
+      }
+    }
+  }
+  return 1;
 }
 
-void enemyShoot()
+void enemyShoot(enemy *e, xend, zend)
 {
+  int xdif, zdif;
+  float angle,xratio, zratio;
+  xdif = xend - e->x;
+  zdif = zend - e->z;
 
+  if(xdif < 0 && zdif < 0)
+  {
+      angle = 3*M_PI/2 + atan(zdif/xdif);
+      e->xratio = sin(angle);
+      e->zratio = -cos(angle);
+  }
+  else if(xdif < 0)
+  {
+    angle = 3*M_PI/2 - atan(zdif/xdif);
+    e->xratio = sin(angle);
+    e->zratio = -cos(angle);
+  }
+  else if(zdif < 0)
+  {
+    angle = M_PI/2 - atan(zdif/xdif);
+    e->xratio = sin(angle);
+    e->zratio = -cos(angle);
+  }
+  else
+  {
+    angle = M_PI/2 + atan(zdif/xdif);
+    e->xratio = sin(angle);
+    e->zratio = -cos(angle);
+  }
+  createMob(e->projectile, e->x, 1.0, e->z, 180);
+  e->px = e->x;
+  e->pz = e->z;
+  e->projectile_flag = 1;
 }
 
 void animateEnemy(enemy *e)

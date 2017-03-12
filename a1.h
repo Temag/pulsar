@@ -1,4 +1,5 @@
 #include <time.h>
+#include <math.h>
 
 typedef struct walls{
     int start[2];
@@ -23,6 +24,12 @@ typedef struct{
   int x;
   int y;
   int z;
+  int projectile;
+  int projectile_flag;
+  float px;
+  float pz;
+  float xratio;
+  float zratio;
 }enemy;
 
 void chooseWall();

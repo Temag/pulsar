@@ -114,7 +114,6 @@ void collisionResponse() {
 	/* your collision code goes here */
 	float *x = malloc(sizeof(float)), *y = malloc(sizeof(float)), *z = malloc(sizeof(float));
 	int fx, fy, fz, rx, ry, rz;
-
 	getViewPosition(x, y, z);
 	fx = (int)(*x * -1);
 	fy = (int)(*y * -1);
@@ -438,6 +437,8 @@ float *la;
            chooseWall();
        }
 
+
+
        if((float)(clock() - before)/(float)CLOCKS_PER_SEC > 0.25)
        {
            before = clock();
@@ -454,6 +455,31 @@ float *la;
 				/*py = py +(0.25 * yratio);*/
 				setMobPosition(0, px, py, pz, angley);
 			 }
+
+			 if(e1.projectile_flag == 1)
+ 			{
+				e1.px = e1.px + (0.25 * e1.xratio);
+				e1.pz = e1.pz + (0.25 * e1.zratio);
+				setMobPosition(e1.projectile, e1.px, 1, e1.pz, 180);
+ 			}
+			if(e2.projectile_flag == 1)
+			{
+				e2.px = e2.px + (0.25 * e2.xratio);
+				e2.pz = e2.pz + (0.25 * e2.zratio);
+				setMobPosition(e1.projectile, e2.px, 1, e2.pz, 180);
+			}
+			 if(e3.projectile_flag == 1)
+				{
+					e3.px = e3.px + (0.25 * e3.xratio);
+					e3.pz = e3.pz + (0.25 * e3.zratio);
+					setMobPosition(e1.projectile, e3.px, 1, e3.pz, 180);
+				}
+			if(e4.projectile_flag == 1)
+			{
+				e4.px = e4.px + (0.25 * e4.xratio);
+				e4.pz = e4.pz + (0.25 * e4.zratio);
+				setMobPosition(e1.projectile, e4.px, 1, e4.pz, 180);
+			}
 
 			 collisionResponse();
    }
@@ -500,19 +526,10 @@ void mouse(int button, int state, int x, int y) {
 		free(ry);
 		free(rz);
 	}
-	if (button == GLUT_MIDDLE_BUTTON)
+	else if (button == GLUT_MIDDLE_BUTTON)
 	  printf("middle button - ");
 	else
-	{
-		if(state != GLUT_UP)
-		{
-			if(lineOfSight(e1))
-			{enemyMovement(&e1);}
-			enemyMovement(&e2);
-			enemyMovement(&e3);
-			enemyMovement(&e4);
-		}
-	}
+	{}
 	/*if (state == GLUT_UP)
 	  printf("up - ");
 	else
@@ -680,6 +697,8 @@ int i, j, k, l=0, r;
 	 /*Create Enemies*/
 	 e1.t = RED;
 	 e1.d = LEFT;
+	 e1.projectile = 1;
+	 e1.projectile_flag = 0;
 	 e1.state = 0;
 	 e1.x = 9;
 	 e1.y = 2;
@@ -688,6 +707,8 @@ int i, j, k, l=0, r;
 
 	 e2.t = RED;
 	 e2.d = RIGHT;
+	 e2.projectile = 2;
+	 e2.projectile_flag = 0;
 	 e2.state = 0;
 	 e2.x = 27;
 	 e2.y = 2;
@@ -696,6 +717,8 @@ int i, j, k, l=0, r;
 
 	 e3.t = YELLOW;
 	 e3.d = UP;
+	 e3.projectile = 3;
+	 e3.projectile_flag = 0;
 	 e3.state = 0;
 	 e3.x = 21;
 	 e3.y = 2;
@@ -704,12 +727,13 @@ int i, j, k, l=0, r;
 
 	 e4.t = YELLOW;
 	 e4.d = DOWN;
+	 e4.projectile = 4;
+	 e4.projectile_flag = 0;
 	 e4.state = 0;
 	 e4.x = 3;
 	 e4.y = 2;
 	 e4.z = 27;
 	 drawEnemy(e4);
-
     /*chooseWall();
     printf("index: %d, direction: %d, NW Direciton: %d\n", old_wall_index, wall_array[old_wall_index].direction, new_wall.direction);*/
 	/* starts the graphics processing loop */
