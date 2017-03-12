@@ -95,9 +95,13 @@ extern wall wall_array[30];
 
 /********* end of extern variable declarations **************/
 
-float px, py, pz, angle, xratio, zratio;
+/********* Global Variable Declaration **************/
+float px, py, pz, anglex, angley, anglez, xratio, zratio;
 
 int projectile_flag, first_time = 1;
+
+enemy e1, e2, e3, e4;
+/********* end of Global Variable Declaration **************/
 
 	/*** collisionResponse() ***/
 	/* -performs collision detection and response */
@@ -447,8 +451,8 @@ float *la;
 			 {
 			 	px = px + (0.25 * xratio);
 				pz = pz + (0.25 * zratio);
-
-				setMobPosition(0, px, py, pz, angle);
+				/*py = py +(0.25 * yratio);*/
+				setMobPosition(0, px, py, pz, angley);
 			 }
 
 			 collisionResponse();
@@ -466,37 +470,50 @@ void mouse(int button, int state, int x, int y) {
 
 	if (button == GLUT_LEFT_BUTTON)
 	{
-		getViewPosition(fx, fy, fz);
-		px = -*fx;
-		py = -*fy;
-		pz = -*fz;
-
-		getViewOrientation(rx, ry, rz);
-		if(*ry < 0)
+		if (state == !GLUT_UP)
 		{
-			angle = ((int)*ry % 360) + 360;
-		}
-		else
-		{
-			angle = (int)*ry % 360;
-		}
+			getViewPosition(fx, fy, fz);
+			px = -*fx;
+			py = -*fy;
+			pz = -*fz;
 
-		createMob(0, -*fx, -*fy, -*fz, angle);
-		xratio = sin(angle*M_PI/180);
-	  zratio = -cos(angle*M_PI/180);
-		projectile_flag = 1;
+			getViewOrientation(rx, ry, rz);
+			if(*ry < 0)
+			{
+				angley = ((int)*ry % 360) + 360;
+				/*Implement vertical aiming*/
+			}
+			else
+			{
+				angley = (int)*ry % 360;
+			}
+
+			createMob(0, -*fx, -*fy, -*fz, angley);
+			xratio = sin(angley*M_PI/180);
+		  zratio = -cos(angley*M_PI/180);
+			projectile_flag = 1;
+		}
+		free(fx);
+		free(fy);
+		free(fz);
+		free(rx);
+		free(ry);
+		free(rz);
 	}
-	free(fx);
-	free(fy);
-	free(fz);
-	free(rx);
-	free(ry);
-	free(rz);
-	/*if (button == GLUT_MIDDLE_BUTTON)
+	if (button == GLUT_MIDDLE_BUTTON)
 	  printf("middle button - ");
 	else
-
-	if (state == GLUT_UP)
+	{
+		if(state != GLUT_UP)
+		{
+			if(lineOfSight(e1))
+			{enemyMovement(&e1);}
+			enemyMovement(&e2);
+			enemyMovement(&e3);
+			enemyMovement(&e4);
+		}
+	}
+	/*if (state == GLUT_UP)
 	  printf("up - ");
 	else
 	  printf("down - ");*/
@@ -660,6 +677,38 @@ int i, j, k, l=0, r;
             }
        }
    }
+	 /*Create Enemies*/
+	 e1.t = RED;
+	 e1.d = LEFT;
+	 e1.state = 0;
+	 e1.x = 9;
+	 e1.y = 2;
+	 e1.z = 15;
+	 drawEnemy(e1);
+
+	 e2.t = RED;
+	 e2.d = RIGHT;
+	 e2.state = 0;
+	 e2.x = 27;
+	 e2.y = 2;
+	 e2.z = 27;
+	 drawEnemy(e2);
+
+	 e3.t = YELLOW;
+	 e3.d = UP;
+	 e3.state = 0;
+	 e3.x = 21;
+	 e3.y = 2;
+	 e3.z = 9;
+	 drawEnemy(e3);
+
+	 e4.t = YELLOW;
+	 e4.d = DOWN;
+	 e4.state = 0;
+	 e4.x = 3;
+	 e4.y = 2;
+	 e4.z = 27;
+	 drawEnemy(e4);
 
     /*chooseWall();
     printf("index: %d, direction: %d, NW Direciton: %d\n", old_wall_index, wall_array[old_wall_index].direction, new_wall.direction);*/

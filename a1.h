@@ -8,30 +8,35 @@ typedef struct walls{
 
 }wall;
 
-enum wall_direction{
+enum directions{
     LEFT, RIGHT, UP, DOWN
 }direction;
 
-typedef struct{
-  int x;
-  int y;
-  int z;
-}renemy;
+enum enemy_type{
+  RED, YELLOW
+}type;
 
 typedef struct{
+  enum enemy_type t;
+  enum directions d;
+  int state;
   int x;
   int y;
   int z;
-}yenemy;
+}enemy;
 
 void chooseWall();
 
 void moveWall();
 
-void drawRedEnemy(renemy e);
+void drawEnemy(enemy e);
 
-void drawYellowEnemy(yenemy e);
+void eraseEnemy(enemy e);
 
-void eraseRedEnemy(renemy e);
+void enemyMovement(enemy *e);
 
-void eraseYellowEnemy(yenemy e);
+int lineOfSight();
+
+void enemyShoot();
+
+void animateEnemy(enemy *e);
