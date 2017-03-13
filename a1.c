@@ -450,7 +450,7 @@ float *la;
 				before = clock();
 				for(i=0; i<4; i++)
 				{
-					if(lineOfSight(&e[i], -(int)*nx, -(int)*nz) == 1 && e[i].projectile_flag == 0)
+					if(lineOfSight(&e[i], -(int)*nx, -(int)*nz) == 1)
 					{
 
 						e[i].projectile_flag = 1;
@@ -486,26 +486,26 @@ float *la;
 			*/
 			if(e[0].projectile_flag == 1)
 			{
-				e[0].px = e[0].px + (0.25 * e[0].xratio);
-				e[0].pz = e[0].pz + (0.25 * e[0].zratio);
+				e[0].px = e[0].px + (0.1 * e[0].xratio);
+				e[0].pz = e[0].pz + (0.1 * e[0].zratio);
 				setMobPosition(e[0].projectile, e[0].px, 1, e[0].pz, 180);
 			}
 			if(e[1].projectile_flag == 1)
 			{
-				e[1].px = e[1].px + (0.25 * e[1].xratio);
-				e[1].pz = e[1].pz + (0.25 * e[1].zratio);
+				e[1].px = e[1].px + (0.1 * e[1].xratio);
+				e[1].pz = e[1].pz + (0.1 * e[1].zratio);
 				setMobPosition(e[1].projectile, e[1].px, 1, e[1].pz, 180);
 			}
 			if(e[2].projectile_flag == 1)
 			{
-				e[2].px = e[2].px + (0.25 * e[2].xratio);
-				e[2].pz = e[2].pz + (0.25 * e[2].zratio);
+				e[2].px = e[2].px + (0.1 * e[2].xratio);
+				e[2].pz = e[2].pz + (0.1 * e[2].zratio);
 				setMobPosition(e[2].projectile, e[2].px, 1, e[2].pz, 180);
 			}
 			if(e[3].projectile_flag == 1)
 			{
-				e[3].px = e[3].px + (0.25 * e[3].xratio);
-				e[3].pz = e[3].pz + (0.25 * e[3].zratio);
+				e[3].px = e[3].px + (0.1 * e[3].xratio);
+				e[3].pz = e[3].pz + (0.1 * e[3].zratio);
 				setMobPosition(e[3].projectile, e[3].px, 1, e[3].pz, 180);
 			}
 

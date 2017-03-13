@@ -481,11 +481,14 @@ int lineOfSight(enemy *e, int xend, int zend)
     }
     j++;
   }
-  e->xratio = xratio;
-  e->zratio = zratio;
-  createMob(e->projectile, e->x, 1.0, e->z, 180);
-  e->px = e->x;
-  e->pz = e->z;
+  if(e->projectile_flag == 0)
+  {
+    e->xratio = xratio;
+    e->zratio = zratio;
+    createMob(e->projectile, e->x, 1.0, e->z, 180);
+    e->px = e->x;
+    e->pz = e->z;
+  }
   return 1;
 }
 
