@@ -161,7 +161,7 @@ void collisionResponse() {
 	}
 
 	/*
-	Collision response for projectile hitting a wall
+	Collision response for player's projectile hitting a wall
 	*/
 	if(world[(int)px][(int)py][(int)pz] == 2)
 	{
@@ -174,6 +174,12 @@ void collisionResponse() {
 		hideMob(0);
 		projectile_flag = 0;
 	}
+
+	projectileCollision(&e1);
+	projectileCollision(&e2);
+	projectileCollision(&e3);
+	projectileCollision(&e4);
+
 	/*
 	Collision response for moving walls, if a wall runs over the player the player
 	will be moved to the side rather than being trapped within the wall
@@ -428,52 +434,71 @@ float *la;
     /* end testworld animation */
 
    } else {
-
-	/* your code goes here */
+			/* your code goes here */
 			/* Move Character*/
-       if(wall_toggle == 0)
-       {
-           wall_toggle = 1;
-           chooseWall();
-       }
+			if(wall_toggle == 0)
+			{
+				wall_toggle = 1;
+				chooseWall();
+			}
 
+			if((float)(clock() - before)/(float)CLOCKS_PER_SEC > 0.25)
+			{
+				float *nx = malloc(sizeof(float)), *ny = malloc(sizeof(float)), *nz = malloc(sizeof(float));
+				getViewPosition(nx, ny, nz);
 
-
-       if((float)(clock() - before)/(float)CLOCKS_PER_SEC > 0.25)
-       {
-           before = clock();
-           moveWall();
-       }
-			 /*I chose not to throw the projectile under a time constraint because it would
-			 pause randomly and I thought that looked weird, and the setMobPosition function
-			 didn't seem to work properly in a function outside of those provided so I couldn't
-			 use the GLUTime*/
-			 if(projectile_flag == 1)
-			 {
-			 	px = px + (0.25 * xratio);
+				before = clock();
+				if(lineOfSight(&e1, -(int)*nx, -(int)*nz) == 1 && e1.projectile_flag == 0)
+				{
+					e1.projectile_flag = 1;
+				}
+				else
+				{
+					printf("Something else\n");
+					enemyMovement(&e1);
+				}
+				//animateEnemy(&e1);
+				animateEnemy(&e2);
+				animateEnemy(&e3);
+				animateEnemy(&e4);
+				moveWall();
+				free(nx);
+				free(ny);
+				free(nz);
+			}
+			/*I chose not to throw the projectile under a time constraint because it would
+			pause randomly and I thought that looked weird, and the setMobPosition function
+			didn't seem to work properly in a function outside of those provided so I couldn't
+			use the GLUTime*/
+			if(projectile_flag == 1)
+			{
+				px = px + (0.25 * xratio);
 				pz = pz + (0.25 * zratio);
 				/*py = py +(0.25 * yratio);*/
 				setMobPosition(0, px, py, pz, angley);
-			 }
-
-			 if(e1.projectile_flag == 1)
- 			{
+			}
+			/*
+			Determines if an enemy already has a projectile in flight, if not, and then
+			player is visible then we fire a new projectile
+			*/
+			if(e1.projectile_flag == 1)
+			{
 				e1.px = e1.px + (0.25 * e1.xratio);
 				e1.pz = e1.pz + (0.25 * e1.zratio);
 				setMobPosition(e1.projectile, e1.px, 1, e1.pz, 180);
- 			}
+			}
 			if(e2.projectile_flag == 1)
 			{
 				e2.px = e2.px + (0.25 * e2.xratio);
 				e2.pz = e2.pz + (0.25 * e2.zratio);
 				setMobPosition(e1.projectile, e2.px, 1, e2.pz, 180);
 			}
-			 if(e3.projectile_flag == 1)
-				{
-					e3.px = e3.px + (0.25 * e3.xratio);
-					e3.pz = e3.pz + (0.25 * e3.zratio);
-					setMobPosition(e1.projectile, e3.px, 1, e3.pz, 180);
-				}
+			if(e3.projectile_flag == 1)
+			{
+				e3.px = e3.px + (0.25 * e3.xratio);
+				e3.pz = e3.pz + (0.25 * e3.zratio);
+				setMobPosition(e1.projectile, e3.px, 1, e3.pz, 180);
+			}
 			if(e4.projectile_flag == 1)
 			{
 				e4.px = e4.px + (0.25 * e4.xratio);
@@ -481,7 +506,7 @@ float *la;
 				setMobPosition(e1.projectile, e4.px, 1, e4.pz, 180);
 			}
 
-			 collisionResponse();
+			collisionResponse();
    }
 }
 
@@ -700,6 +725,7 @@ int i, j, k, l=0, r;
 	 e1.projectile = 1;
 	 e1.projectile_flag = 0;
 	 e1.state = 0;
+	 e1.steps = 6;
 	 e1.x = 9;
 	 e1.y = 2;
 	 e1.z = 15;
@@ -710,6 +736,7 @@ int i, j, k, l=0, r;
 	 e2.projectile = 2;
 	 e2.projectile_flag = 0;
 	 e2.state = 0;
+	 e2.steps = 6;
 	 e2.x = 27;
 	 e2.y = 2;
 	 e2.z = 27;
@@ -720,6 +747,7 @@ int i, j, k, l=0, r;
 	 e3.projectile = 3;
 	 e3.projectile_flag = 0;
 	 e3.state = 0;
+	 e3.steps = 6;
 	 e3.x = 21;
 	 e3.y = 2;
 	 e3.z = 9;
@@ -730,6 +758,7 @@ int i, j, k, l=0, r;
 	 e4.projectile = 4;
 	 e4.projectile_flag = 0;
 	 e4.state = 0;
+	 e4.steps = 6;
 	 e4.x = 3;
 	 e4.y = 2;
 	 e4.z = 27;

@@ -38,6 +38,26 @@ void drawEnemy(enemy e)
         world[e.x][e.y][e.z-1] = 3;
         break;
       case 1:
+        world[e.x+1][e.y+1][e.z+1] = 3;
+        world[e.x+1][e.y+1][e.z-1] = 3;
+        world[e.x+1][e.y-1][e.z+1] = 3;
+        world[e.x+1][e.y-1][e.z-1] = 3;
+
+        world[e.x+1][e.y+1][e.z] = 3;
+        world[e.x+1][e.y+1][e.z] = 3;
+        world[e.x+1][e.y-1][e.z] = 3;
+        world[e.x+1][e.y-1][e.z] = 3;
+
+        world[e.x-1][e.y+1][e.z+1] = 3;
+        world[e.x-1][e.y+1][e.z-1] = 3;
+        world[e.x-1][e.y-1][e.z+1] = 3;
+        world[e.x-1][e.y-1][e.z-1] = 3;
+
+        world[e.x-1][e.y+1][e.z] = 3;
+        world[e.x-1][e.y+1][e.z] = 3;
+        world[e.x-1][e.y-1][e.z] = 3;
+        world[e.x-1][e.y-1][e.z] = 3;
+
         world[e.x][e.y][e.z] = 3;
         world[e.x][e.y][e.z+1] = 3;
         world[e.x][e.y][e.z-1] = 3;
@@ -156,6 +176,31 @@ void eraseEnemy(enemy e)
   {
     switch(e.state)
     {
+      case 0:
+        world[e.x+1][e.y+1][e.z+1] = 0;
+        world[e.x+1][e.y+1][e.z-1] = 0;
+        world[e.x+1][e.y-1][e.z+1] = 0;
+        world[e.x+1][e.y-1][e.z-1] = 0;
+
+        world[e.x+1][e.y+1][e.z] = 0;
+        world[e.x+1][e.y+1][e.z] = 0;
+        world[e.x+1][e.y-1][e.z] = 0;
+        world[e.x+1][e.y-1][e.z] = 0;
+
+        world[e.x-1][e.y+1][e.z+1] = 0;
+        world[e.x-1][e.y+1][e.z-1] = 0;
+        world[e.x-1][e.y-1][e.z+1] = 0;
+        world[e.x-1][e.y-1][e.z-1] = 0;
+
+        world[e.x-1][e.y+1][e.z] = 0;
+        world[e.x-1][e.y+1][e.z] = 0;
+        world[e.x-1][e.y-1][e.z] = 0;
+        world[e.x-1][e.y-1][e.z] = 0;
+
+        world[e.x][e.y][e.z] = 0;
+        world[e.x][e.y][e.z+1] = 0;
+        world[e.x][e.y][e.z-1] = 0;
+        break;
       case 1:
         world[e.x][e.y][e.z] = 0;
         world[e.x][e.y][e.z+1] = 0;
@@ -176,32 +221,52 @@ void eraseEnemy(enemy e)
         world[e.x-1][e.y][e.z] = 0;
         world[e.x-1][e.y][e.z+1] = 0;
         world[e.x-1][e.y][e.z-1] = 0;
+
+        world[e.x+1][e.y+1][e.z+1] = 0;
+        world[e.x+1][e.y+1][e.z-1] = 0;
+        world[e.x+1][e.y-1][e.z+1] = 0;
+        world[e.x+1][e.y-1][e.z-1] = 0;
+
+        world[e.x+1][e.y+1][e.z] = 0;
+        world[e.x+1][e.y+1][e.z] = 0;
+        world[e.x+1][e.y-1][e.z] = 0;
+        world[e.x+1][e.y-1][e.z] = 0;
+
+        world[e.x-1][e.y+1][e.z+1] = 0;
+        world[e.x-1][e.y+1][e.z-1] = 0;
+        world[e.x-1][e.y-1][e.z+1] = 0;
+        world[e.x-1][e.y-1][e.z-1] = 0;
+
+        world[e.x-1][e.y+1][e.z] = 0;
+        world[e.x-1][e.y+1][e.z] = 0;
+        world[e.x-1][e.y-1][e.z] = 0;
+        world[e.x-1][e.y-1][e.z] = 0;
         break;
-        case 2:
-          world[e.x+1][e.y+1][e.z+1] = 0;
-          world[e.x+1][e.y+1][e.z-1] = 0;
-          world[e.x+1][e.y-1][e.z+1] = 0;
-          world[e.x+1][e.y-1][e.z-1] = 0;
+      case 2:
+        world[e.x+1][e.y+1][e.z+1] = 0;
+        world[e.x+1][e.y+1][e.z-1] = 0;
+        world[e.x+1][e.y-1][e.z+1] = 0;
+        world[e.x+1][e.y-1][e.z-1] = 0;
 
-          world[e.x+1][e.y+1][e.z] = 0;
-          world[e.x+1][e.y+1][e.z] = 0;
-          world[e.x+1][e.y-1][e.z] = 0;
-          world[e.x+1][e.y-1][e.z] = 0;
+        world[e.x+1][e.y+1][e.z] = 0;
+        world[e.x+1][e.y+1][e.z] = 0;
+        world[e.x+1][e.y-1][e.z] = 0;
+        world[e.x+1][e.y-1][e.z] = 0;
 
-          world[e.x-1][e.y+1][e.z+1] = 0;
-          world[e.x-1][e.y+1][e.z-1] = 0;
-          world[e.x-1][e.y-1][e.z+1] = 0;
-          world[e.x-1][e.y-1][e.z-1] = 0;
+        world[e.x-1][e.y+1][e.z+1] = 0;
+        world[e.x-1][e.y+1][e.z-1] = 0;
+        world[e.x-1][e.y-1][e.z+1] = 0;
+        world[e.x-1][e.y-1][e.z-1] = 0;
 
-          world[e.x-1][e.y+1][e.z] = 0;
-          world[e.x-1][e.y+1][e.z] = 0;
-          world[e.x-1][e.y-1][e.z] = 0;
-          world[e.x-1][e.y-1][e.z] = 0;
+        world[e.x-1][e.y+1][e.z] = 0;
+        world[e.x-1][e.y+1][e.z] = 0;
+        world[e.x-1][e.y-1][e.z] = 0;
+        world[e.x-1][e.y-1][e.z] = 0;
 
-          world[e.x][e.y][e.z] = 0;
-          world[e.x][e.y][e.z+1] = 0;
-          world[e.x][e.y][e.z-1] = 0;
-          break;
+        world[e.x][e.y][e.z] = 0;
+        world[e.x][e.y][e.z+1] = 0;
+        world[e.x][e.y][e.z-1] = 0;
+        break;
       case 3:
         world[e.x][e.y][e.z] = 0;
         world[e.x][e.y][e.z+1] = 0;
@@ -278,25 +343,29 @@ void enemyMovement(enemy *e)
       case LEFT:
         eraseEnemy(*e);
         e->x++;
+        e->steps--;
         drawEnemy(*e);
         break;
       case RIGHT:
         eraseEnemy(*e);
         e->x--;
+        e->steps--;
         drawEnemy(*e);
         break;
       case UP:
         eraseEnemy(*e);
         e->z++;
+        e->steps--;
         drawEnemy(*e);
         break;
       case DOWN:
         eraseEnemy(*e);
         e->z--;
+        e->steps--;
         drawEnemy(*e);
         break;
     }
-    
+
   }
 
   else if(e->t == YELLOW)
@@ -304,102 +373,90 @@ void enemyMovement(enemy *e)
     switch(e->d)
     {
       case LEFT:
-        eraseEnemy(*e);
-        e->x++;
-        drawEnemy(*e);
+        if(lineOfSight(*e, e->x+e->steps, e->z))
+        {
+          eraseEnemy(*e);
+          e->x++;
+          e->steps--;
+          drawEnemy(*e);
+        }
         break;
       case RIGHT:
-        eraseEnemy(*e);
-        e->x--;
-        drawEnemy(*e);
+        if(lineOfSight(*e, e->x-e->steps, e->z))
+        {
+          eraseEnemy(*e);
+          e->x--;
+          e->steps--;
+          drawEnemy(*e);
+        }
         break;
       case UP:
-        eraseEnemy(*e);
-        e->z++;
-        drawEnemy(*e);
+        if(lineOfSight(*e, e->x, e->z+e->steps))
+        {
+          eraseEnemy(*e);
+          e->z++;
+          e->steps--;
+          drawEnemy(*e);
+        }
         break;
       case DOWN:
-        eraseEnemy(*e);
-        e->z--;
-        drawEnemy(*e);
+        if(world[e->x][1][e->z] != 3)
+        {
+          eraseEnemy(*e);
+          e->z--;
+          e->steps--;
+          drawEnemy(*e);
+        }
         break;
     }
   }
+  /*if(e->steps <= 0)
+  {
+    e->steps = 6;
+
+    //if(lineOfSight(e, e->x+6, e->z))
+    e->d = LEFT;
+
+    //else if(lineOfSight(e, e->x-6, e->z))
+    e->d = RIGHT;
+
+    //else if(lineOfSight(e, e->x, e->z+6))
+    e->d = UP;
+
+    //if(lineOfSight(e, e->, e->z-6))
+    e->d = DOWN;
+
+  }*/
 }
 
-int lineOfSight(enemy e, int xend, int zend)
+int lineOfSight(enemy *e, int xend, int zend)
 {
-  int xdif, zdif, x, z;
-  float delta_error, error;
-  xdif = e.x - xend;
-  zdif = e.z - zend;
-  delta_error = abs(zdif/xdif);
-  error = delta_error-0.5;
-  z = e.z;
-  if(xdif < 0 && zdif < 0)
+  int xdif, zdif, j, slope;
+  float xratio, zratio, x, z;
+  double hyp;
+  xdif = xend - e->x;
+  zdif = zend - e->z;
+  hyp = sqrt(pow(xdif, 2) + pow(zdif,2));
+  zratio = zdif/hyp;
+  xratio = xdif/hyp;
+  x = e->x;
+  z = e->z;
+  j=0;
+  while(j<(abs(xdif/(1*xratio))) || j<(abs(zdif/(1*zratio))))
   {
-    for(x = e.x; x<xend; x++)
+    x = x + (1*xratio);
+    z = z + (1*zratio);
+    if(world[(int)x][1][(int)z] == 2 || world[(int)x][1][(int)z] == 5)
     {
-      if(world[x][e.y][z] != 2 && world[x][e.y][z] != 6)
-      {
-        return 0;
-      }
-      error = error + delta_error;
-      if(error > 0.5)
-      {
-        z = z - 1;
-        error = error + 1.0;
-      }
+      return 0;
     }
+    j++;
   }
-  else if(xdif < 0)
-  {
-    for(x = e.x; x<xend; x++)
-    {
-      if(world[x][e.y][z] != 2 && world[x][e.y][z] != 6)
-      {
-        return 0;
-      }
-      error = error + delta_error;
-      if(error > 0.5)
-      {
-        z = z - 1;
-        error = error - 1.0;
-      }
-    }
-  }
-  else if(zdif < 0)
-  {
-    for(x = e.x; x>xend; x--)
-    {
-      if(world[x][e.y][z] != 2 && world[x][e.y][z] != 6)
-      {
-        return 0;
-      }
-      error = error + delta_error;
-      if(error > 0.5)
-      {
-        z = z + 1;
-        error = error + 1.0;
-      }
-    }
-  }
-  else
-  {
-    for(x = e.x; x>xend; x--)
-    {
-      if(world[x][e.y][z] != 2 && world[x][e.y][z] != 6)
-      {
-        return 0;
-      }
-      error = error + delta_error;
-      if(error > 0.5)
-      {
-        z = z - 1;
-        error = error - 1.0;
-      }
-    }
-  }
+  e->xratio = xratio;
+  e->zratio = zratio;
+  createMob(e->projectile, e->x, 1.0, e->z, 180);
+  e->px = e->x;
+  e->pz = e->z;
   return 1;
 }
 
@@ -445,4 +502,13 @@ void animateEnemy(enemy *e)
   eraseEnemy(*e);
   e->state = (e->state + 1) % 4;
   drawEnemy(*e);
+}
+
+void projectileCollision(enemy *e)
+{
+  if(world[(int)e->px][1][(int)e->pz] == 2 || world[(int)e->px][1][(int)e->pz] == 5)
+  {
+    hideMob(e->projectile);
+    e->projectile_flag = 0;
+  }
 }
