@@ -343,7 +343,6 @@ void enemyMovement(enemy *e)
       {
         eraseEnemy(*e);
         e->x++;
-        e->steps--;
         drawEnemy(*e);
       }
       else
@@ -368,7 +367,6 @@ void enemyMovement(enemy *e)
       {
         eraseEnemy(*e);
         e->x--;
-        e->steps--;
         drawEnemy(*e);
       }
       else
@@ -393,7 +391,6 @@ void enemyMovement(enemy *e)
       {
         eraseEnemy(*e);
         e->z++;
-        e->steps--;
         drawEnemy(*e);
       }
       else
@@ -418,7 +415,6 @@ void enemyMovement(enemy *e)
       {
         eraseEnemy(*e);
         e->z--;
-        e->steps--;
         drawEnemy(*e);
       }
       else
@@ -439,23 +435,6 @@ void enemyMovement(enemy *e)
       }
       break;
   }
-  /*if(e->steps <= 0)
-  {
-    e->steps = 6;
-
-    //if(lineOfSight(e, e->x+6, e->z))
-    e->d = LEFT;
-
-    //else if(lineOfSight(e, e->x-6, e->z))
-    e->d = RIGHT;
-
-    //else if(lineOfSight(e, e->x, e->z+6))
-    e->d = UP;
-
-    //if(lineOfSight(e, e->, e->z-6))
-    e->d = DOWN;
-
-  }*/
 }
 
 int lineOfSight(enemy *e, int xend, int zend)
@@ -485,7 +464,6 @@ int lineOfSight(enemy *e, int xend, int zend)
   {
     e->xratio = xratio;
     e->zratio = zratio;
-    createMob(e->projectile, e->x, 1.0, e->z, 180);
     e->px = e->x;
     e->pz = e->z;
   }
@@ -506,4 +484,37 @@ void projectileCollision(enemy *e)
     hideMob(e->projectile);
     e->projectile_flag = 0;
   }
+}
+
+int dance(enemy e)
+{
+  float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float));
+  float xratio, zratio, theta;
+  int angle;
+
+  getViewOrientation(fx, fy, fz);
+  if(*fy < 0)
+  {
+    angle = ((int)*fy % 360) + 360;
+    /*Implement vertical aiming*/
+  }
+  else
+  {
+    angle = (int)*fy % 360;
+  }
+  xratio = sin(angle*M_PI/180);
+  zratio = -cos(angle*M_PI/180);
+
+  theta = acos((e.xratio * xratio) + (e.zratio * zratio));
+  if(theta < M_PI/4 && theta > -M_PI/4)
+  {
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
+  free(fx);
+  free(fy);
+  free(fz);
 }

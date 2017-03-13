@@ -452,8 +452,15 @@ float *la;
 				{
 					if(lineOfSight(&e[i], -(int)*nx, -(int)*nz) == 1)
 					{
-
-						e[i].projectile_flag = 1;
+						if(dance(e[i]) == 1)
+						{
+							createMob(e[i].projectile, e[i].x, 1.0, e[i].z, 180);
+							e[i].projectile_flag = 1;
+						}
+						else
+						{
+							enemyMovement(&e[i]);
+						}
 					}
 					else
 					{
@@ -728,7 +735,6 @@ int i, j, k, l=0, r;
 	 e[0].projectile = 1;
 	 e[0].projectile_flag = 0;
 	 e[0].state = 0;
-	 e[0].steps = 6;
 	 e[0].x = 9;
 	 e[0].y = 2;
 	 e[0].z = 15;
@@ -739,7 +745,6 @@ int i, j, k, l=0, r;
 	 e[1].projectile = 2;
 	 e[1].projectile_flag = 0;
 	 e[1].state = 0;
-	 e[1].steps = 6;
 	 e[1].x = 27;
 	 e[1].y = 2;
 	 e[1].z = 27;
@@ -750,7 +755,6 @@ int i, j, k, l=0, r;
 	 e[2].projectile = 3;
 	 e[2].projectile_flag = 0;
 	 e[2].state = 0;
-	 e[2].steps = 6;
 	 e[2].x = 21;
 	 e[2].y = 2;
 	 e[2].z = 9;
@@ -761,7 +765,6 @@ int i, j, k, l=0, r;
 	 e[3].projectile = 4;
 	 e[3].projectile_flag = 0;
 	 e[3].state = 0;
-	 e[3].steps = 6;
 	 e[3].x = 3;
 	 e[3].y = 2;
 	 e[3].z = 27;
