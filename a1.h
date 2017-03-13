@@ -43,7 +43,7 @@ void eraseEnemy(enemy e);
 
 void enemyMovement(enemy *e);
 
-int lineOfSight();
+int lineOfSight(enemy *e, int xend, int zend);
 
 void enemyShoot();
 

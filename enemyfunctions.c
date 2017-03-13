@@ -336,79 +336,108 @@ void eraseEnemy(enemy e)
 
 void enemyMovement(enemy *e)
 {
-  if(e->t == RED)
+  switch(e->d)
   {
-    switch(e->d)
-    {
-      case LEFT:
+    case LEFT:
+      if(world[e->x + 3][4][e->z] == 0 && world[e->x + 6][4][e->z] != 8 && world[e->x + 6][1][e->z] != 3)
+      {
         eraseEnemy(*e);
         e->x++;
         e->steps--;
         drawEnemy(*e);
-        break;
-      case RIGHT:
+      }
+      else
+      {
+        int r = rand()%3;
+        switch(r)
+        {
+          case 0:
+            e->d = RIGHT;
+            break;
+          case 1:
+            e->d = DOWN;
+            break;
+          case 2:
+            e->d = UP;
+            break;
+        }
+      }
+      break;
+    case RIGHT:
+      if(world[e->x - 3][4][e->z] == 0 && world[e->x-6][4][e->z] != 8 && world[e->x - 6][1][e->z] != 3)
+      {
         eraseEnemy(*e);
         e->x--;
         e->steps--;
         drawEnemy(*e);
-        break;
-      case UP:
+      }
+      else
+      {
+        int r = rand()%3;
+        switch(r)
+        {
+          case 0:
+            e->d = LEFT;
+            break;
+          case 1:
+            e->d = DOWN;
+            break;
+          case 2:
+            e->d = UP;
+            break;
+        }
+      }
+      break;
+    case UP:
+      if(world[e->x][4][e->z + 3] == 0 && world[e->x][4][e->z + 6] != 8 && world[e->x][1][e->z + 6] != 3)
+      {
         eraseEnemy(*e);
         e->z++;
         e->steps--;
         drawEnemy(*e);
-        break;
-      case DOWN:
+      }
+      else
+      {
+        int r = rand()%3;
+        switch(r)
+        {
+          case 0:
+            e->d = RIGHT;
+            break;
+          case 1:
+            e->d = DOWN;
+            break;
+          case 2:
+            e->d = LEFT;
+            break;
+        }
+      }
+      break;
+    case DOWN:
+      if(world[e->x][4][e->z - 3] == 0 && world[e->x][4][e->z - 6] != 8 && world[e->x][1][e->z - 6] != 3)
+      {
         eraseEnemy(*e);
         e->z--;
         e->steps--;
         drawEnemy(*e);
-        break;
-    }
-
-  }
-
-  else if(e->t == YELLOW)
-  {
-    switch(e->d)
-    {
-      case LEFT:
-        if(lineOfSight(*e, e->x+e->steps, e->z))
+      }
+      else
+      {
+        int r = rand()%3;
+        switch(r)
         {
-          eraseEnemy(*e);
-          e->x++;
-          e->steps--;
-          drawEnemy(*e);
+          case 0:
+            e->d = RIGHT;
+            break;
+          case 1:
+            e->d = LEFT;
+            break;
+          case 2:
+            e->d = UP;
+            break;
         }
-        break;
-      case RIGHT:
-        if(lineOfSight(*e, e->x-e->steps, e->z))
-        {
-          eraseEnemy(*e);
-          e->x--;
-          e->steps--;
-          drawEnemy(*e);
-        }
-        break;
-      case UP:
-        if(lineOfSight(*e, e->x, e->z+e->steps))
-        {
-          eraseEnemy(*e);
-          e->z++;
-          e->steps--;
-          drawEnemy(*e);
-        }
-        break;
-      case DOWN:
-        if(world[e->x][1][e->z] != 3)
-        {
-          eraseEnemy(*e);
-          e->z--;
-          e->steps--;
-          drawEnemy(*e);
-        }
-        break;
-    }
+      }
+      break;
   }
   /*if(e->steps <= 0)
   {
@@ -458,43 +487,6 @@ int lineOfSight(enemy *e, int xend, int zend)
   e->px = e->x;
   e->pz = e->z;
   return 1;
-}
-
-void enemyShoot(enemy *e, xend, zend)
-{
-  int xdif, zdif;
-  float angle,xratio, zratio;
-  xdif = xend - e->x;
-  zdif = zend - e->z;
-
-  if(xdif < 0 && zdif < 0)
-  {
-      angle = 3*M_PI/2 + atan(zdif/xdif);
-      e->xratio = sin(angle);
-      e->zratio = -cos(angle);
-  }
-  else if(xdif < 0)
-  {
-    angle = 3*M_PI/2 - atan(zdif/xdif);
-    e->xratio = sin(angle);
-    e->zratio = -cos(angle);
-  }
-  else if(zdif < 0)
-  {
-    angle = M_PI/2 - atan(zdif/xdif);
-    e->xratio = sin(angle);
-    e->zratio = -cos(angle);
-  }
-  else
-  {
-    angle = M_PI/2 + atan(zdif/xdif);
-    e->xratio = sin(angle);
-    e->zratio = -cos(angle);
-  }
-  createMob(e->projectile, e->x, 1.0, e->z, 180);
-  e->px = e->x;
-  e->pz = e->z;
-  e->projectile_flag = 1;
 }
 
 void animateEnemy(enemy *e)

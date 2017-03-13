@@ -4,7 +4,7 @@
 /* http://www.swiftless.com/tutorials/opengl/camera2.html */
 
 /* Frames per second code taken from : */
-/* http://www.lighthouse3d.com/opengl/glut/index.php?fps */
+/* http://www.lighthouse[2]d.com/opengl/glut/index.php?fps */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -100,7 +100,7 @@ float px, py, pz, anglex, angley, anglez, xratio, zratio;
 
 int projectile_flag, first_time = 1;
 
-enemy e1, e2, e3, e4;
+enemy e[4];
 /********* end of Global Variable Declaration **************/
 
 	/*** collisionResponse() ***/
@@ -175,10 +175,10 @@ void collisionResponse() {
 		projectile_flag = 0;
 	}
 
-	projectileCollision(&e1);
-	projectileCollision(&e2);
-	projectileCollision(&e3);
-	projectileCollision(&e4);
+	projectileCollision(&e[0]);
+	projectileCollision(&e[1]);
+	projectileCollision(&e[2]);
+	projectileCollision(&e[3]);
 
 	/*
 	Collision response for moving walls, if a wall runs over the player the player
@@ -448,19 +448,22 @@ float *la;
 				getViewPosition(nx, ny, nz);
 
 				before = clock();
-				if(lineOfSight(&e1, -(int)*nx, -(int)*nz) == 1 && e1.projectile_flag == 0)
+				for(i=0; i<4; i++)
 				{
-					e1.projectile_flag = 1;
+					if(lineOfSight(&e[i], -(int)*nx, -(int)*nz) == 1 && e[i].projectile_flag == 0)
+					{
+
+						e[i].projectile_flag = 1;
+					}
+					else
+					{
+						enemyMovement(&e[i]);
+					}
 				}
-				else
-				{
-					printf("Something else\n");
-					enemyMovement(&e1);
-				}
-				//animateEnemy(&e1);
-				animateEnemy(&e2);
-				animateEnemy(&e3);
-				animateEnemy(&e4);
+				animateEnemy(&e[0]);
+				animateEnemy(&e[1]);
+				animateEnemy(&e[2]);
+				animateEnemy(&e[3]);
 				moveWall();
 				free(nx);
 				free(ny);
@@ -481,29 +484,29 @@ float *la;
 			Determines if an enemy already has a projectile in flight, if not, and then
 			player is visible then we fire a new projectile
 			*/
-			if(e1.projectile_flag == 1)
+			if(e[0].projectile_flag == 1)
 			{
-				e1.px = e1.px + (0.25 * e1.xratio);
-				e1.pz = e1.pz + (0.25 * e1.zratio);
-				setMobPosition(e1.projectile, e1.px, 1, e1.pz, 180);
+				e[0].px = e[0].px + (0.25 * e[0].xratio);
+				e[0].pz = e[0].pz + (0.25 * e[0].zratio);
+				setMobPosition(e[0].projectile, e[0].px, 1, e[0].pz, 180);
 			}
-			if(e2.projectile_flag == 1)
+			if(e[1].projectile_flag == 1)
 			{
-				e2.px = e2.px + (0.25 * e2.xratio);
-				e2.pz = e2.pz + (0.25 * e2.zratio);
-				setMobPosition(e1.projectile, e2.px, 1, e2.pz, 180);
+				e[1].px = e[1].px + (0.25 * e[1].xratio);
+				e[1].pz = e[1].pz + (0.25 * e[1].zratio);
+				setMobPosition(e[1].projectile, e[1].px, 1, e[1].pz, 180);
 			}
-			if(e3.projectile_flag == 1)
+			if(e[2].projectile_flag == 1)
 			{
-				e3.px = e3.px + (0.25 * e3.xratio);
-				e3.pz = e3.pz + (0.25 * e3.zratio);
-				setMobPosition(e1.projectile, e3.px, 1, e3.pz, 180);
+				e[2].px = e[2].px + (0.25 * e[2].xratio);
+				e[2].pz = e[2].pz + (0.25 * e[2].zratio);
+				setMobPosition(e[2].projectile, e[2].px, 1, e[2].pz, 180);
 			}
-			if(e4.projectile_flag == 1)
+			if(e[3].projectile_flag == 1)
 			{
-				e4.px = e4.px + (0.25 * e4.xratio);
-				e4.pz = e4.pz + (0.25 * e4.zratio);
-				setMobPosition(e1.projectile, e4.px, 1, e4.pz, 180);
+				e[3].px = e[3].px + (0.25 * e[3].xratio);
+				e[3].pz = e[3].pz + (0.25 * e[3].zratio);
+				setMobPosition(e[3].projectile, e[3].px, 1, e[3].pz, 180);
 			}
 
 			collisionResponse();
@@ -720,49 +723,49 @@ int i, j, k, l=0, r;
        }
    }
 	 /*Create Enemies*/
-	 e1.t = RED;
-	 e1.d = LEFT;
-	 e1.projectile = 1;
-	 e1.projectile_flag = 0;
-	 e1.state = 0;
-	 e1.steps = 6;
-	 e1.x = 9;
-	 e1.y = 2;
-	 e1.z = 15;
-	 drawEnemy(e1);
+	 e[0].t = RED;
+	 e[0].d = LEFT;
+	 e[0].projectile = 1;
+	 e[0].projectile_flag = 0;
+	 e[0].state = 0;
+	 e[0].steps = 6;
+	 e[0].x = 9;
+	 e[0].y = 2;
+	 e[0].z = 15;
+	 drawEnemy(e[0]);
 
-	 e2.t = RED;
-	 e2.d = RIGHT;
-	 e2.projectile = 2;
-	 e2.projectile_flag = 0;
-	 e2.state = 0;
-	 e2.steps = 6;
-	 e2.x = 27;
-	 e2.y = 2;
-	 e2.z = 27;
-	 drawEnemy(e2);
+	 e[1].t = RED;
+	 e[1].d = RIGHT;
+	 e[1].projectile = 2;
+	 e[1].projectile_flag = 0;
+	 e[1].state = 0;
+	 e[1].steps = 6;
+	 e[1].x = 27;
+	 e[1].y = 2;
+	 e[1].z = 27;
+	 drawEnemy(e[1]);
 
-	 e3.t = YELLOW;
-	 e3.d = UP;
-	 e3.projectile = 3;
-	 e3.projectile_flag = 0;
-	 e3.state = 0;
-	 e3.steps = 6;
-	 e3.x = 21;
-	 e3.y = 2;
-	 e3.z = 9;
-	 drawEnemy(e3);
+	 e[2].t = YELLOW;
+	 e[2].d = UP;
+	 e[2].projectile = 3;
+	 e[2].projectile_flag = 0;
+	 e[2].state = 0;
+	 e[2].steps = 6;
+	 e[2].x = 21;
+	 e[2].y = 2;
+	 e[2].z = 9;
+	 drawEnemy(e[2]);
 
-	 e4.t = YELLOW;
-	 e4.d = DOWN;
-	 e4.projectile = 4;
-	 e4.projectile_flag = 0;
-	 e4.state = 0;
-	 e4.steps = 6;
-	 e4.x = 3;
-	 e4.y = 2;
-	 e4.z = 27;
-	 drawEnemy(e4);
+	 e[3].t = YELLOW;
+	 e[3].d = DOWN;
+	 e[3].projectile = 4;
+	 e[3].projectile_flag = 0;
+	 e[3].state = 0;
+	 e[3].steps = 6;
+	 e[3].x = 3;
+	 e[3].y = 2;
+	 e[3].z = 27;
+	 drawEnemy(e[3]);
     /*chooseWall();
     printf("index: %d, direction: %d, NW Direciton: %d\n", old_wall_index, wall_array[old_wall_index].direction, new_wall.direction);*/
 	/* starts the graphics processing loop */
