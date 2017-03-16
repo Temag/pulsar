@@ -507,7 +507,6 @@ void playerVector(float * xratio, float * zratio)
 int dance(enemy e)
 {
   float xratio, zratio, theta;
-  int angle;
 
   playerDirection(&xratio, &zratio);
 
