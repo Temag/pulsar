@@ -549,12 +549,9 @@ void mouse(int button, int state, int x, int y) {
 	else if (button == GLUT_MIDDLE_BUTTON)
 	  printf("middle button - ");
 	else
-	{}
-	/*if (state == GLUT_UP)
-	  printf("up - ");
-	else
-	  printf("down - ");*/
+	{
 
+	}
 }
 
 

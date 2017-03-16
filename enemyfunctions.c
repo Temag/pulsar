@@ -508,7 +508,7 @@ int dance(enemy e)
 {
   float xratio, zratio, theta;
 
-  playerDirection(&xratio, &zratio);
+  playerVector(&xratio, &zratio);
 
   theta = acos((e.xratio * xratio) + (e.zratio * zratio));
   if(theta < M_PI/4 && theta > -M_PI/4)
