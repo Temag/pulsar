@@ -96,7 +96,7 @@ extern wall wall_array[30];
 /********* end of extern variable declarations **************/
 
 /********* Global Variable Declaration **************/
-float px, py, pz, anglex, angley, anglez, xratio, zratio;
+float px, py, pz, anglex, angley, anglez, xratio, zratio, yratio;
 
 int projectile_flag, first_time = 1;
 
@@ -450,11 +450,11 @@ float *la;
 				before = clock();
 				for(i=0; i<4; i++)
 				{
-					if(lineOfSight(&e[i], -(int)*nx, -(int)*nz) == 1)
+					if(lineOfSight(&e[i], -(int)*nx, -(int)*nz, -(int)*ny) == 1)
 					{
 						if(dance(e[i]) == 1)
 						{
-							createMob(e[i].projectile, e[i].x, 1.0, e[i].z, 180);
+							createMob(e[i].projectile, e[i].x, e[i].y, e[i].z, 180);
 							e[i].projectile_flag = 1;
 						}
 						else
@@ -484,6 +484,7 @@ float *la;
 			{
 				px = px + (0.25 * xratio);
 				pz = pz + (0.25 * zratio);
+				py = py + (0.25 * yratio);
 				/*py = py +(0.25 * yratio);*/
 				setMobPosition(0, px, py, pz, angley);
 			}
@@ -494,26 +495,30 @@ float *la;
 			if(e[0].projectile_flag == 1)
 			{
 				e[0].px = e[0].px + (0.1 * e[0].xratio);
+				e[0].py = e[0].py + (0.1 * e[0].yratio);
 				e[0].pz = e[0].pz + (0.1 * e[0].zratio);
-				setMobPosition(e[0].projectile, e[0].px, 1, e[0].pz, 180);
+				setMobPosition(e[0].projectile, e[0].px, e[0].py, e[0].pz, 180);
 			}
 			if(e[1].projectile_flag == 1)
 			{
 				e[1].px = e[1].px + (0.1 * e[1].xratio);
+				e[1].py = e[1].py + (0.1 * e[1].yratio);
 				e[1].pz = e[1].pz + (0.1 * e[1].zratio);
-				setMobPosition(e[1].projectile, e[1].px, 1, e[1].pz, 180);
+				setMobPosition(e[1].projectile, e[1].px, e[1].py, e[1].pz, 180);
 			}
 			if(e[2].projectile_flag == 1)
 			{
 				e[2].px = e[2].px + (0.1 * e[2].xratio);
+				e[2].py = e[2].py + (0.1 * e[2].yratio);
 				e[2].pz = e[2].pz + (0.1 * e[2].zratio);
-				setMobPosition(e[2].projectile, e[2].px, 1, e[2].pz, 180);
+				setMobPosition(e[2].projectile, e[2].px, e[2].py, e[2].pz, 180);
 			}
 			if(e[3].projectile_flag == 1)
 			{
 				e[3].px = e[3].px + (0.1 * e[3].xratio);
+				e[3].py = e[3].py + (0.1 * e[3].yratio);
 				e[3].pz = e[3].pz + (0.1 * e[3].zratio);
-				setMobPosition(e[3].projectile, e[3].px, 1, e[3].pz, 180);
+				setMobPosition(e[3].projectile, e[3].px, e[3].py, e[3].pz, 180);
 			}
 
 			collisionResponse();
@@ -539,7 +544,7 @@ void mouse(int button, int state, int x, int y) {
 			pz = -*fz;
 
 			createMob(0, -*fx, -*fy, -*fz, 180);
-			playerVector(&xratio, &zratio);
+			playerVector(&xratio, &zratio, &yratio);
 			projectile_flag = 1;
 		}
 		free(fx);

@@ -339,7 +339,7 @@ void enemyMovement(enemy *e)
   switch(e->d)
   {
     case LEFT:
-      if(world[e->x + 3][4][e->z] == 0 && world[e->x + 6][4][e->z] != 8 && world[e->x + 6][1][e->z] != 3)
+      if(world[e->x + 2][4][e->z] == 0 && world[e->x + 3][4][e->z] != 8 && world[e->x + 3][1][e->z] != 3)
       {
         eraseEnemy(*e);
         e->x++;
@@ -363,7 +363,7 @@ void enemyMovement(enemy *e)
       }
       break;
     case RIGHT:
-      if(world[e->x - 3][4][e->z] == 0 && world[e->x-6][4][e->z] != 8 && world[e->x - 6][1][e->z] != 3)
+      if(world[e->x - 2][4][e->z] == 0 && world[e->x-3][4][e->z] != 8 && world[e->x - 3][1][e->z] != 3)
       {
         eraseEnemy(*e);
         e->x--;
@@ -387,7 +387,7 @@ void enemyMovement(enemy *e)
       }
       break;
     case UP:
-      if(world[e->x][4][e->z + 3] == 0 && world[e->x][4][e->z + 6] != 8 && world[e->x][1][e->z + 6] != 3)
+      if(world[e->x][4][e->z + 2] == 0 && world[e->x][4][e->z + 3] != 8 && world[e->x][1][e->z + 3] != 3)
       {
         eraseEnemy(*e);
         e->z++;
@@ -411,7 +411,7 @@ void enemyMovement(enemy *e)
       }
       break;
     case DOWN:
-      if(world[e->x][4][e->z - 3] == 0 && world[e->x][4][e->z - 6] != 8 && world[e->x][1][e->z - 6] != 3)
+      if(world[e->x][4][e->z - 2] == 0 && world[e->x][4][e->z - 3] != 8 && world[e->x][1][e->z - 3] != 3)
       {
         eraseEnemy(*e);
         e->z--;
@@ -437,24 +437,29 @@ void enemyMovement(enemy *e)
   }
 }
 
-int lineOfSight(enemy *e, int xend, int zend)
+int lineOfSight(enemy *e, int xend, int zend, int yend)
 {
-  int xdif, zdif, j, slope;
-  float xratio, zratio, x, z;
-  double hyp;
+  int xdif, ydif, zdif, j, slope;
+  float xratio, zratio, yratio, x, z, y;
+  double hyp, hyp1;
   xdif = xend - e->x;
   zdif = zend - e->z;
+  ydif = yend - e->y;
   hyp = sqrt(pow(xdif, 2) + pow(zdif,2));
+  hyp1 = sqrt(pow(hyp, 2) + pow(ydif, 2));
+  yratio = ydif/hyp1;
   zratio = zdif/hyp;
   xratio = xdif/hyp;
   x = e->x;
   z = e->z;
+  y = e->y;
   j=0;
   while(j<(abs(xdif/(1*xratio))) || j<(abs(zdif/(1*zratio))))
   {
     x = x + (1*xratio);
     z = z + (1*zratio);
-    if(world[(int)x][1][(int)z] == 2 || world[(int)x][1][(int)z] == 5)
+    y = y + (1*yratio);
+    if(world[(int)x][(int)y][(int)z] == 2 || world[(int)x][(int)y][(int)z] == 5)
     {
       return 0;
     }
@@ -464,8 +469,10 @@ int lineOfSight(enemy *e, int xend, int zend)
   {
     e->xratio = xratio;
     e->zratio = zratio;
+    e->yratio = yratio;
     e->px = e->x;
     e->pz = e->z;
+    e->py = e->y;
   }
   return 1;
 }
@@ -486,31 +493,39 @@ void projectileCollision(enemy *e)
   }
 }
 
-void playerVector(float * xratio, float * zratio)
+void playerVector(float * xratio, float * zratio, float * yratio)
 {
-    float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float)), angle;
+    float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float)), angle, anglex, anglez;
 
     getViewOrientation(fx, fy, fz);
+
     if(*fy < 0)
-    {
       angle = ((int)*fy % 360) + 360;
-      /*Implement vertical aiming*/
-    }
     else
-    {
       angle = (int)*fy % 360;
-    }
+
+    if(*fx < 0)
+      anglex = ((int)*fx % 360) + 360;
+    else
+      anglex = (int)*fx % 360;
+
+    if(*fz < 0)
+      anglez = ((int)*fz % 360) + 360;
+    else
+      anglez = (int)*fz % 360;
+
+    *yratio = -sin(anglex*M_PI/180) + -sin(anglez*M_PI/180);
     *xratio = sin(angle*M_PI/180);
     *zratio = -cos(angle*M_PI/180);
 }
 
 int dance(enemy e)
 {
-  float xratio, zratio, theta;
+  float xratio, zratio, yratio, theta;
 
-  playerVector(&xratio, &zratio);
+  playerVector(&xratio, &zratio, &yratio);
 
-  theta = acos((e.xratio * xratio) + (e.zratio * zratio));
+  theta = acos((e.xratio * xratio) + (e.yratio * yratio) + (e.zratio * zratio));
   if(theta < M_PI/4 && theta > -M_PI/4)
   {
     return 1;

@@ -28,7 +28,9 @@ typedef struct{
   int projectile_flag;
   float px;
   float pz;
+  float py;
   float xratio;
+  float yratio;
   float zratio;
 }enemy;
 
@@ -42,7 +44,7 @@ void eraseEnemy(enemy e);
 
 void enemyMovement(enemy *e);
 
-int lineOfSight(enemy *e, int xend, int zend);
+int lineOfSight(enemy *e, int xend, int zend, int yend);
 
 void enemyShoot();
 
@@ -50,6 +52,6 @@ void animateEnemy(enemy *e);
 
 void projectileCollision(enemy *e);
 
-void playerVector(float *xratio, float *zratio);
+void playerVector(float *xratio, float *zratio, float * yratio);
 
 int dance();
