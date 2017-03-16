@@ -452,8 +452,15 @@ float *la;
 				{
 					if(lineOfSight(&e[i], -(int)*nx, -(int)*nz) == 1)
 					{
-
-						e[i].projectile_flag = 1;
+						if(dance(e[i]) == 1)
+						{
+							createMob(e[i].projectile, e[i].x, 1.0, e[i].z, 180);
+							e[i].projectile_flag = 1;
+						}
+						else
+						{
+							enemyMovement(&e[i]);
+						}
 					}
 					else
 					{
@@ -520,7 +527,7 @@ float *la;
 	/*  released */
 void mouse(int button, int state, int x, int y) {
 	float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float));
-	float *rx = malloc(sizeof(float)), *ry = malloc(sizeof(float)), *rz = malloc(sizeof(float));
+	//float *rx = malloc(sizeof(float)), *ry = malloc(sizeof(float)), *rz = malloc(sizeof(float));
 
 	if (button == GLUT_LEFT_BUTTON)
 	{
@@ -531,28 +538,13 @@ void mouse(int button, int state, int x, int y) {
 			py = -*fy;
 			pz = -*fz;
 
-			getViewOrientation(rx, ry, rz);
-			if(*ry < 0)
-			{
-				angley = ((int)*ry % 360) + 360;
-				/*Implement vertical aiming*/
-			}
-			else
-			{
-				angley = (int)*ry % 360;
-			}
-
-			createMob(0, -*fx, -*fy, -*fz, angley);
-			xratio = sin(angley*M_PI/180);
-		  zratio = -cos(angley*M_PI/180);
+			createMob(0, -*fx, -*fy, -*fz, 180);
+			playerVector(&xratio, &zratio);
 			projectile_flag = 1;
 		}
 		free(fx);
 		free(fy);
 		free(fz);
-		free(rx);
-		free(ry);
-		free(rz);
 	}
 	else if (button == GLUT_MIDDLE_BUTTON)
 	  printf("middle button - ");
@@ -728,7 +720,6 @@ int i, j, k, l=0, r;
 	 e[0].projectile = 1;
 	 e[0].projectile_flag = 0;
 	 e[0].state = 0;
-	 e[0].steps = 6;
 	 e[0].x = 9;
 	 e[0].y = 2;
 	 e[0].z = 15;
@@ -739,7 +730,6 @@ int i, j, k, l=0, r;
 	 e[1].projectile = 2;
 	 e[1].projectile_flag = 0;
 	 e[1].state = 0;
-	 e[1].steps = 6;
 	 e[1].x = 27;
 	 e[1].y = 2;
 	 e[1].z = 27;
@@ -750,7 +740,6 @@ int i, j, k, l=0, r;
 	 e[2].projectile = 3;
 	 e[2].projectile_flag = 0;
 	 e[2].state = 0;
-	 e[2].steps = 6;
 	 e[2].x = 21;
 	 e[2].y = 2;
 	 e[2].z = 9;
@@ -761,7 +750,6 @@ int i, j, k, l=0, r;
 	 e[3].projectile = 4;
 	 e[3].projectile_flag = 0;
 	 e[3].state = 0;
-	 e[3].steps = 6;
 	 e[3].x = 3;
 	 e[3].y = 2;
 	 e[3].z = 27;

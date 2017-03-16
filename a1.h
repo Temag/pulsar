@@ -21,7 +21,6 @@ typedef struct{
   enum enemy_type t;
   enum directions d;
   int state;
-  int steps;
   int x;
   int y;
   int z;
@@ -50,3 +49,7 @@ void enemyShoot();
 void animateEnemy(enemy *e);
 
 void projectileCollision(enemy *e);
+
+void playerVector(float *xratio, float *zratio);
+
+int dance();
