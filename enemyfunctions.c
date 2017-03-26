@@ -493,6 +493,12 @@ void projectileCollision(enemy *e)
   }
 }
 
+void keyPlacement(keyCube key)
+{
+  if(key.set != 1)
+    world[key.x][key.y][key.z] = 5;
+}
+
 void playerVector(float * xratio, float * zratio, float * yratio)
 {
     float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float)), angle, anglex, anglez;

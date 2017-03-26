@@ -1,6 +1,13 @@
 #include <time.h>
 #include <math.h>
 
+typedef struct{
+  int x;
+  int y;
+  int z;
+  int set;
+}keyCube;
+
 typedef struct walls{
     int start[2];
     int end[2];

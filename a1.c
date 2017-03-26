@@ -100,6 +100,16 @@ float px, py, pz, anglex, angley, anglez, xratio, zratio, yratio;
 
 int projectile_flag, first_time = 1;
 
+key_message = 0;
+
+win_message = 0;
+
+death_message = 0;
+
+keyCube key;
+
+clock_t mtimer;
+
 enemy e[4];
 /********* end of Global Variable Declaration **************/
 
@@ -118,6 +128,22 @@ void collisionResponse() {
 	fx = (int)(*x * -1);
 	fy = (int)(*y * -1);
 	fz = (int)(*z * -1);
+	/*Collision response for key cube*/
+	if(fx == key.x && fy == key.y && fz == key.z && key.set == 0)
+	{
+		key.set = 1;
+		key_message = 1;
+		world[key.x][key.y][key.z] = 0;
+		mtimer = clock();
+	}
+
+	/*Collision response for exit door*/
+	if(world[fx][fy][fz] == 5 && key.set == 1)
+	{
+		win_message = 1;
+		mtimer = clock();
+		exit(0);
+	}
 
 	/*
 	World Collision
@@ -304,6 +330,7 @@ void draw2D() {
 			 /*Horizontal exterior walls*/
 			 draw2Dline(screenWidth-231, screenHeight-228, screenWidth-9, screenHeight-228, 6);
 			 draw2Dline(screenWidth-231, screenHeight-12, screenWidth-9, screenHeight-12, 6);
+
 	   }
 		 /*Draws a large map in center of the screen, 16x16 pixels per square*/
 		 else if(displayMap == 2)
@@ -366,6 +393,85 @@ void draw2D() {
 			draw2Dbox(screenWidth-800, screenHeight-631, screenWidth-240, screenHeight-71);
 
 	 	}
+		GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
+		set2Dcolour(black);
+		
+		if(key_message == 1)
+		{
+		/* Draw K */
+		draw2Dbox(screenWidth - 816, screenHeight - 200, screenWidth - 810, screenHeight - 300);
+		draw2Dbox(screenWidth - 810, screenHeight - 247, screenWidth - 804, screenHeight - 253);
+		/* Upper part */
+		draw2Dbox(screenWidth - 804, screenHeight - 241, screenWidth - 798, screenHeight - 247);
+		draw2Dbox(screenWidth - 798, screenHeight - 235, screenWidth - 792, screenHeight - 241);
+		draw2Dbox(screenWidth - 792, screenHeight - 229, screenWidth - 786, screenHeight - 235);
+		draw2Dbox(screenWidth - 786, screenHeight - 223, screenWidth - 780, screenHeight - 229);
+		draw2Dbox(screenWidth - 780, screenHeight - 217, screenWidth - 774, screenHeight - 223);
+		draw2Dbox(screenWidth - 774, screenHeight - 211, screenWidth - 768, screenHeight - 217);
+		draw2Dbox(screenWidth - 768, screenHeight - 205, screenWidth - 762, screenHeight - 211);
+		//draw2Dbox(screenWidth - 762, screenHeight - 199, screenWidth - 756, screenHeight - 205);
+
+		/* Lower Part */
+		draw2Dbox(screenWidth - 804, screenHeight - 253, screenWidth - 798, screenHeight - 259);
+		draw2Dbox(screenWidth - 798, screenHeight - 259, screenWidth - 792, screenHeight - 265);
+		draw2Dbox(screenWidth - 792, screenHeight - 265, screenWidth - 786, screenHeight - 271);
+		draw2Dbox(screenWidth - 786, screenHeight - 271, screenWidth - 780, screenHeight - 277);
+		draw2Dbox(screenWidth - 780, screenHeight - 277, screenWidth - 774, screenHeight - 283);
+		draw2Dbox(screenWidth - 774, screenHeight - 283, screenWidth - 768, screenHeight - 289);
+		draw2Dbox(screenWidth - 768, screenHeight - 289, screenWidth - 762, screenHeight - 295);
+		//draw2Dbox(screenWidth - 762, screenHeight - 295, screenWidth - 756, screenHeight - 301);
+		/* Draw E */
+		draw2Dbox(screenWidth - 750, screenHeight - 200, screenWidth - 744, screenHeight - 300);
+		draw2Dbox(screenWidth - 744, screenHeight - 200, screenWidth - 694, screenHeight - 206);//top
+		draw2Dbox(screenWidth - 744, screenHeight - 247, screenWidth - 719, screenHeight - 253);//middle
+		draw2Dbox(screenWidth - 744, screenHeight - 294, screenWidth - 694, screenHeight - 300);//bottom
+		/* Draw Y */
+		draw2Dbox(screenWidth - 684, screenHeight - 200, screenWidth - 678, screenHeight - 250);
+		draw2Dbox(screenWidth - 678, screenHeight - 244, screenWidth - 624, screenHeight - 250);
+		draw2Dbox(screenWidth - 630, screenHeight - 250, screenWidth - 624, screenHeight - 200);
+		draw2Dbox(screenWidth - 651, screenHeight - 250, screenWidth - 657, screenHeight - 300);
+
+		/* Draw F */
+		draw2Dbox(screenWidth - 600, screenHeight - 200, screenWidth - 594, screenHeight - 300);
+		draw2Dbox(screenWidth - 600, screenHeight - 200, screenWidth - 540, screenHeight - 206);//top
+		draw2Dbox(screenWidth - 600, screenHeight - 247, screenWidth - 570, screenHeight - 253);//middle
+
+		/* Draw O */
+		draw2Dbox(screenWidth - 534, screenHeight - 200, screenWidth - 528, screenHeight - 300);//left
+		draw2Dbox(screenWidth - 480, screenHeight - 200, screenWidth - 474, screenHeight - 300);//right
+		draw2Dbox(screenWidth - 534, screenHeight - 200, screenWidth - 474, screenHeight - 206);//top
+		draw2Dbox(screenWidth - 534, screenHeight - 300, screenWidth - 474, screenHeight - 294);//bottom
+
+		/* Draw U */
+		draw2Dbox(screenWidth - 468, screenHeight - 200, screenWidth - 462, screenHeight - 300);//left
+		draw2Dbox(screenWidth - 414, screenHeight - 200, screenWidth - 408, screenHeight - 300);//right
+		draw2Dbox(screenWidth - 468, screenHeight - 300, screenWidth - 408, screenHeight - 294);//bottom
+		/* Draw n */
+		draw2Dbox(screenWidth - 402, screenHeight - 200, screenWidth - 396, screenHeight - 300);//left
+		draw2Dbox(screenWidth - 348, screenHeight - 200, screenWidth - 342, screenHeight - 300);//right
+		draw2Dbox(screenWidth - 402, screenHeight - 200, screenWidth - 342, screenHeight - 206);//top
+		/* Draw d */
+		draw2Dbox(screenWidth - 336, screenHeight - 195, screenWidth - 330, screenHeight - 305);//left
+		draw2Dbox(screenWidth - 282, screenHeight - 200, screenWidth - 276, screenHeight - 300);//right
+		draw2Dbox(screenWidth - 336, screenHeight - 300, screenWidth - 276, screenHeight - 294);//bottom
+		draw2Dbox(screenWidth - 336, screenHeight - 200, screenWidth - 276, screenHeight - 206);//top
+		}
+		else if(win_message == 1)
+		{
+			/* Draw C */
+			draw2Dbox(screenWidth - 816, screenHeight - 200, screenWidth - 810, screenHeight - 300);
+			/* Draw O */
+			/* Draw M */
+			/* Draw P */
+			/* Draw L */
+			/* Draw E */
+			/* Draw T */
+			/* Draw E */
+		}
+		else if(death_message == 1)
+		{
+
+		}
 		free(fx);
 		free(fy);
 		free(fz);
@@ -442,6 +548,10 @@ float *la;
 				chooseWall();
 			}
 
+			/* Resets the key incase an enemy walks over it, does nothing if the key has already been collected */
+			keyPlacement(key);
+
+			/* Checkes line of site of each enemy, animates the enemies, and moves the interior walls */
 			if((float)(clock() - before)/(float)CLOCKS_PER_SEC > 0.25)
 			{
 				float *nx = malloc(sizeof(float)), *ny = malloc(sizeof(float)), *nz = malloc(sizeof(float));
@@ -476,6 +586,7 @@ float *la;
 				free(ny);
 				free(nz);
 			}
+
 			/*I chose not to throw the projectile under a time constraint because it would
 			pause randomly and I thought that looked weird, and the setMobPosition function
 			didn't seem to work properly in a function outside of those provided so I couldn't
@@ -485,12 +596,12 @@ float *la;
 				px = px + (0.25 * xratio);
 				pz = pz + (0.25 * zratio);
 				py = py + (0.25 * yratio);
-				/*py = py +(0.25 * yratio);*/
 				setMobPosition(0, px, py, pz, angley);
 			}
+
 			/*
-			Determines if an enemy already has a projectile in flight, if not, and then
-			player is visible then we fire a new projectile
+			Determines if an enemy already has a projectile in flight, if not, and the
+			player is visible then they fire a new projectile
 			*/
 			if(e[0].projectile_flag == 1)
 			{
@@ -519,6 +630,20 @@ float *la;
 				e[3].py = e[3].py + (0.1 * e[3].yratio);
 				e[3].pz = e[3].pz + (0.1 * e[3].zratio);
 				setMobPosition(e[3].projectile, e[3].px, e[3].py, e[3].pz, 180);
+			}
+
+			/* After a brief period of time resets the message flags to remove the message from screen */
+			if(key_message == 1 && (float)(clock() - mtimer)/(float)CLOCKS_PER_SEC > 1)
+			{
+				key_message = 0;
+			}
+			else if(win_message == 1 && (float)(clock() - mtimer)/(float)CLOCKS_PER_SEC > 1.5)
+			{
+				win_message = 0;
+			}
+			else if(death_message == 1 && (float)(clock() - mtimer)/(float)CLOCKS_PER_SEC > 1.5)
+			{
+				death_message == 0;
 			}
 
 			collisionResponse();
@@ -662,7 +787,7 @@ int i, j, k, l=0, r;
 				{
 					for(k=1; k<5; k++)
 					{
-						world[j][k][i] = 5;
+						world[j][k][i] = 4;
 					}
 				}
 			}
@@ -716,6 +841,23 @@ int i, j, k, l=0, r;
             }
        }
    }
+
+	 /*Create exit door*/
+	 for(i=0; i < 3; i++)
+	 {
+		 for(j=0; j < 3; j++)
+		 {
+			 world[1+j][1+i][36] = 5;
+		 }
+	 }
+
+	 /* Generate effect cubes */
+	 /* Key */
+	 key.x = 3 + (rand() % 5 + 1)*6;
+	 key.z = 3 + (rand() % 5 + 1)*6;
+	 key.y = 1;
+	 keyPlacement(key);
+
 	 /*Create Enemies*/
 	 e[0].t = RED;
 	 e[0].d = LEFT;
@@ -756,8 +898,6 @@ int i, j, k, l=0, r;
 	 e[3].y = 2;
 	 e[3].z = 27;
 	 drawEnemy(e[3]);
-    /*chooseWall();
-    printf("index: %d, direction: %d, NW Direciton: %d\n", old_wall_index, wall_array[old_wall_index].direction, new_wall.direction);*/
 	/* starts the graphics processing loop */
 	/* code after this will not run until the program exits */
    glutMainLoop();
