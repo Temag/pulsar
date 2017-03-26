@@ -41,6 +41,8 @@ typedef struct{
   float zratio;
 }enemy;
 
+void initializeGame();
+
 void chooseWall();
 
 void moveWall();

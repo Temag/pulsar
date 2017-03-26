@@ -3,6 +3,7 @@
 
 extern void createMob(int, float, float, float, float);
 extern void setMobPosition(int, float, float, float, float);
+extern void setViewPosition(float, float ,float);
 extern void hideMob(int);
 extern void showMob(int);
 extern int death_message;
@@ -490,7 +491,7 @@ void projectileCollision(enemy *e)
   float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float));
   getViewPosition(fx, fy, fz);
 
-  if(world[(int)e->px][(int)e->py][(int)e->pz] == 2 || world[(int)e->px][(int)e->py][(int)e->pz] == 4)
+  if(world[(int)e->px][(int)e->py][(int)e->pz] == 2 || world[(int)e->px][(int)e->py][(int)e->pz] == 7 || e->px>=99 || e->px<=0 || e->py>=49 || e->py<=0 || e->pz>=99 || e->pz<=0)
   {
     hideMob(e->projectile);
     e->projectile_flag = 0;
@@ -498,6 +499,8 @@ void projectileCollision(enemy *e)
   else if((int)e->px == (int)(-*fx) && (int)e->py == (int)(-*fy) && (int)e->pz == (int)(-*fz))
   {
     death_message = 1;
+    setViewPosition(-2.0, -1.0, -2.0);
+    setViewOrientation(0.0, 180.0, 0.0);
     mtimer = clock();
   }
 

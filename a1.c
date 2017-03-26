@@ -141,8 +141,15 @@ void collisionResponse() {
 	if(world[fx][fy][fz] == 5 && key.set == 1)
 	{
 		win_message = 1;
+		key.set = 0;
+		setViewPosition(-2.0, -1.0, -2.0);
+		getViewPosition(x, y, z);
+		fx = (int)(*x * -1);
+		fy = (int)(*y * -1);
+		fz = (int)(*z * -1);
+		initializeGame();
+		chooseWall();
 		mtimer = clock();
-		exit(0);
 	}
 
 	/*
@@ -195,7 +202,7 @@ void collisionResponse() {
 		hideMob(0);
 		projectile_flag = 0;
 	}
-	else if (px>=99 || px<=0 || py>=49 || py<=0 || pz>=99 || pz<=0 || world[(int)px][(int)py][(int)pz] == 5)
+	else if (px>=99 || px<=0 || py>=49 || py<=0 || pz>=99 || pz<=0 || world[(int)px][(int)py][(int)pz] == 7)
 	{
 		hideMob(0);
 		projectile_flag = 0;
@@ -274,10 +281,12 @@ void draw2D() {
 		 if(displayMap == 1)
 		 {
 			 /*Create colour variables*/
+			 GLfloat red[] = {255.0, 0.0, 0.0, 1.0};
+			 GLfloat orange[] = {255.0, 0.5, 0.0, 1.0};
 			 GLfloat green[] = {0.0, 0.5, 0.0, 1.0};
 			 GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
 			 GLfloat blue[] = {0.0, 0.0, 0.5, 1.0};
-			 GLfloat white[] = {0.5, 0.5, 0.5, 1.0};
+			 GLfloat white[] = {255.0, 153.0, 51.0, 1.0};
 			 GLfloat yellow[] = {255.0, 255.5, 0.0, 1.0};
 
 			 /*Draw player*/
@@ -298,7 +307,7 @@ void draw2D() {
 			 }
 
 			 /*Draw permanent pillars*/
-			 set2Dcolour(white);
+			 set2Dcolour(orange);
 			 for(i=screenWidth-195; i<screenWidth-15; i+=36)
 			 {
 				 for(j=screenHeight-192; j<screenHeight-12; j+=36)
@@ -317,6 +326,31 @@ void draw2D() {
 					 }
 				 }
 			 }
+
+			 /* Draw key */
+			 set2Dcolour(white);
+			 x = (screenWidth - 15) - (key.x*6);
+			 z = (key.z*6) + (screenHeight-228);
+			 draw2Dbox(x, z, x+6, z+6);
+
+			 /* Draw enemies */
+			 set2Dcolour(red);
+			 x = (screenWidth-15) - (e[0].x*6);
+			 z = (e[0].z*6) + (screenHeight-228);
+			 draw2Dbox(x+9, z+9, x-8, z-8);
+
+			 x = (screenWidth-15) - (e[1].x*6);
+			 z = (e[1].z*6) + (screenHeight-228);
+			 draw2Dbox(x+9, z+9, x-8, z-8);
+
+			 set2Dcolour(yellow);
+			 x = (screenWidth-15) - (e[2].x*6);
+			 z = (e[2].z*6) + (screenHeight-228);
+			 draw2Dbox(x+9, z+9, x-8, z-8);
+
+			 x = (screenWidth-15) - (e[3].x*6);
+			 z = (e[3].z*6) + (screenHeight-228);
+			 draw2Dbox(x+9, z+9, x-8, z-8);
 
 			 /*Creates the floor of the map*/
 			 set2Dcolour(green);
@@ -797,177 +831,11 @@ int i, j, k, l=0, r;
 
    } else {
 
-	/* your code to build the world goes here */
-	/* initialize world to empty */
-       srand(time(NULL));
-       before = clock();
-      for(i=0; i<WORLDX; i++)
-         for(j=0; j<WORLDY; j++)
-            for(k=0; k<WORLDZ; k++)
-               world[i][j][k] = 0;
-
-			for(i=0; i<37; i++)
-			{
-				for(j=0; j<37; j++)
-				{
-						world[i][0][j] = 1;
-				}
-			}
-			for(i=0; i<37; i++)
-			{
-				for(k=0; k<5; k++)
-				{
-					world[i][0+k][0] = 2;
-					world[i][0+k][36] = 2;
-				}
-			}
-
-			for(i=0; i<36; i++)
-			{
-				for(k=0; k<5; k++)
-				{
-					world[0][0+k][i] = 2;
-					world[36][0+k][i] = 2;
-				}
-			}
-
-			/*createPlayer(0, 52.0, 27.0, 52.0, 0.0);
-			setPlayerPosition(0, 1.0, 1, 4.0, 0.0);*/
-			setViewPosition(-2.0, -1.0, -2.0);
-			setViewOrientation(0.0, 180.0, .0);
-
-			/*
-			Generate pillars every 6 spaces
-			*/
-			for(i=6; i<36; i+=6)
-			{
-				for(j=6; j<36; j+=6)
-				{
-					for(k=1; k<5; k++)
-					{
-						world[j][k][i] = 4;
-					}
-				}
-			}
-       for(i=6; i<42; i+=6)
-       {
-           for(j=6; j<36; j+=6)
-           {
-               /*
-                Generates walls running in the Z direction (parallel with starting orientation)
-                */
-               r = rand() % 2;
-               if(r == 1 && total_walls < 30)
-               {
-                   for(k=5; k>0; k--)
-                   {
-                       for(l=1; l<5; l++)
-                       {
-                           world[j][l][i-k] = 2;
-                       }
-                   }
-                   wall_array[total_walls].start[0] = j;
-                   wall_array[total_walls].start[1] = i;
-                   wall_array[total_walls].end[0] = j;
-                   wall_array[total_walls].end[1] = i-5;
-                   wall_array[total_walls].direction = DOWN;
-                   wall_array[total_walls].current_length = 5;
-                   total_walls++;
-               }
-
-               /*
-                Generates walls running in the X direction (perpendicular to starting orientation)
-                */
-               r = rand() % 2;
-               if(r == 1 && total_walls < 30)
-               {
-                   for(k=5; k>0; k--)
-                   {
-                       for(l=1; l<5; l++)
-                       {
-                           world[i-k][l][j] = 2;
-                       }
-                   }
-                   wall_array[total_walls].start[0] = i;
-                   wall_array[total_walls].start[1] = j;
-                   wall_array[total_walls].end[0] = i-5;
-                   wall_array[total_walls].end[1] = j;
-                   wall_array[total_walls].direction = RIGHT;
-                   wall_array[total_walls].current_length = 5;
-                   total_walls++;
-               }
-            }
-       }
-   }
-
-	 /*Create exit door*/
-	 for(i=0; i < 3; i++)
-	 {
-		 for(j=0; j < 3; j++)
-		 {
-			 world[1+j][1+i][36] = 5;
-		 }
-	 }
-
-	 /* Generate effect cubes */
-	 /* Key */
-	 key.x = 3 + (rand() % 5 + 1)*6;
-	 key.z = 3 + (rand() % 5 + 1)*6;
-	 key.y = 1;
-	 keyPlacement(key);
-
-	 /*Create Enemies*/
-	 e[0].t = RED;
-	 e[0].d = LEFT;
-	 e[0].projectile = 1;
-	 e[0].projectile_flag = 0;
-	 e[0].state = 0;
-	 e[0].x = 9;
-	 e[0].y = 2;
-	 e[0].z = 15;
-	 e[0].px = e[0].x;
-	 e[0].px = e[0].y;
-	 e[0].px = e[0].z;
-	 drawEnemy(e[0]);
-
-	 e[1].t = RED;
-	 e[1].d = RIGHT;
-	 e[1].projectile = 2;
-	 e[1].projectile_flag = 0;
-	 e[1].state = 0;
-	 e[1].x = 27;
-	 e[1].y = 2;
-	 e[1].z = 27;
-	 e[1].px = e[1].x;
-	 e[1].px = e[1].y;
-	 e[1].px = e[1].z;
-	 drawEnemy(e[1]);
-
-	 e[2].t = YELLOW;
-	 e[2].d = UP;
-	 e[2].projectile = 3;
-	 e[2].projectile_flag = 0;
-	 e[2].state = 0;
-	 e[2].x = 21;
-	 e[2].y = 2;
-	 e[2].z = 9;
-	 e[2].px = e[2].x;
-	 e[2].px = e[2].y;
-	 e[2].px = e[2].z;
-	 drawEnemy(e[2]);
-
-	 e[3].t = YELLOW;
-	 e[3].d = DOWN;
-	 e[3].projectile = 4;
-	 e[3].projectile_flag = 0;
-	 e[3].state = 0;
-	 e[3].x = 3;
-	 e[3].y = 2;
-	 e[3].z = 27;
-	 e[3].px = e[3].x;
-	 e[3].px = e[3].y;
-	 e[3].px = e[3].z;
-	 drawEnemy(e[3]);
+		/***** Start of my Main function *****/
+		srand(time(NULL));
+		before = clock();
+		initializeGame();
+	}
 	/* starts the graphics processing loop */
 	/* code after this will not run until the program exits */
    glutMainLoop();
