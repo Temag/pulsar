@@ -5,7 +5,8 @@ extern void createMob(int, float, float, float, float);
 extern void setMobPosition(int, float, float, float, float);
 extern void hideMob(int);
 extern void showMob(int);
-
+extern int death_message;
+extern clock_t mtimer;
 void drawEnemy(enemy e)
 {
   if(e.t == RED)
@@ -486,11 +487,23 @@ void animateEnemy(enemy *e)
 
 void projectileCollision(enemy *e)
 {
-  if(world[(int)e->px][1][(int)e->pz] == 2 || world[(int)e->px][1][(int)e->pz] == 5)
+  float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float));
+  getViewPosition(fx, fy, fz);
+
+  if(world[(int)e->px][(int)e->py][(int)e->pz] == 2 || world[(int)e->px][(int)e->py][(int)e->pz] == 4)
   {
     hideMob(e->projectile);
     e->projectile_flag = 0;
   }
+  else if((int)e->px == (int)(-*fx) && (int)e->py == (int)(-*fy) && (int)e->pz == (int)(-*fz))
+  {
+    death_message = 1;
+    mtimer = clock();
+  }
+
+  free(fx);
+  free(fy);
+  free(fz);
 }
 
 void keyPlacement(keyCube key)
@@ -523,6 +536,9 @@ void playerVector(float * xratio, float * zratio, float * yratio)
     *yratio = -sin(anglex*M_PI/180) + -sin(anglez*M_PI/180);
     *xratio = sin(angle*M_PI/180);
     *zratio = -cos(angle*M_PI/180);
+    free(fx);
+    free(fy);
+    free(fz);
 }
 
 int dance(enemy e)

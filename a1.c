@@ -100,11 +100,11 @@ float px, py, pz, anglex, angley, anglez, xratio, zratio, yratio;
 
 int projectile_flag, first_time = 1;
 
-key_message = 0;
+int key_message = 0;
 
-win_message = 0;
+int win_message = 0;
 
-death_message = 0;
+int death_message = 0;
 
 keyCube key;
 
@@ -395,82 +395,140 @@ void draw2D() {
 	 	}
 		GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
 		set2Dcolour(black);
-		
+
 		if(key_message == 1)
 		{
-		/* Draw K */
-		draw2Dbox(screenWidth - 816, screenHeight - 200, screenWidth - 810, screenHeight - 300);
-		draw2Dbox(screenWidth - 810, screenHeight - 247, screenWidth - 804, screenHeight - 253);
-		/* Upper part */
-		draw2Dbox(screenWidth - 804, screenHeight - 241, screenWidth - 798, screenHeight - 247);
-		draw2Dbox(screenWidth - 798, screenHeight - 235, screenWidth - 792, screenHeight - 241);
-		draw2Dbox(screenWidth - 792, screenHeight - 229, screenWidth - 786, screenHeight - 235);
-		draw2Dbox(screenWidth - 786, screenHeight - 223, screenWidth - 780, screenHeight - 229);
-		draw2Dbox(screenWidth - 780, screenHeight - 217, screenWidth - 774, screenHeight - 223);
-		draw2Dbox(screenWidth - 774, screenHeight - 211, screenWidth - 768, screenHeight - 217);
-		draw2Dbox(screenWidth - 768, screenHeight - 205, screenWidth - 762, screenHeight - 211);
-		//draw2Dbox(screenWidth - 762, screenHeight - 199, screenWidth - 756, screenHeight - 205);
+			/* Draw K */
+			draw2Dbox(screenWidth - 816, screenHeight - 200, screenWidth - 810, screenHeight - 300);
+			draw2Dbox(screenWidth - 810, screenHeight - 247, screenWidth - 804, screenHeight - 253);
+			/* Upper part */
+			draw2Dbox(screenWidth - 804, screenHeight - 241, screenWidth - 798, screenHeight - 247);
+			draw2Dbox(screenWidth - 798, screenHeight - 235, screenWidth - 792, screenHeight - 241);
+			draw2Dbox(screenWidth - 792, screenHeight - 229, screenWidth - 786, screenHeight - 235);
+			draw2Dbox(screenWidth - 786, screenHeight - 223, screenWidth - 780, screenHeight - 229);
+			draw2Dbox(screenWidth - 780, screenHeight - 217, screenWidth - 774, screenHeight - 223);
+			draw2Dbox(screenWidth - 774, screenHeight - 211, screenWidth - 768, screenHeight - 217);
+			draw2Dbox(screenWidth - 768, screenHeight - 205, screenWidth - 762, screenHeight - 211);
+			//draw2Dbox(screenWidth - 762, screenHeight - 199, screenWidth - 756, screenHeight - 205);
 
-		/* Lower Part */
-		draw2Dbox(screenWidth - 804, screenHeight - 253, screenWidth - 798, screenHeight - 259);
-		draw2Dbox(screenWidth - 798, screenHeight - 259, screenWidth - 792, screenHeight - 265);
-		draw2Dbox(screenWidth - 792, screenHeight - 265, screenWidth - 786, screenHeight - 271);
-		draw2Dbox(screenWidth - 786, screenHeight - 271, screenWidth - 780, screenHeight - 277);
-		draw2Dbox(screenWidth - 780, screenHeight - 277, screenWidth - 774, screenHeight - 283);
-		draw2Dbox(screenWidth - 774, screenHeight - 283, screenWidth - 768, screenHeight - 289);
-		draw2Dbox(screenWidth - 768, screenHeight - 289, screenWidth - 762, screenHeight - 295);
-		//draw2Dbox(screenWidth - 762, screenHeight - 295, screenWidth - 756, screenHeight - 301);
-		/* Draw E */
-		draw2Dbox(screenWidth - 750, screenHeight - 200, screenWidth - 744, screenHeight - 300);
-		draw2Dbox(screenWidth - 744, screenHeight - 200, screenWidth - 694, screenHeight - 206);//top
-		draw2Dbox(screenWidth - 744, screenHeight - 247, screenWidth - 719, screenHeight - 253);//middle
-		draw2Dbox(screenWidth - 744, screenHeight - 294, screenWidth - 694, screenHeight - 300);//bottom
-		/* Draw Y */
-		draw2Dbox(screenWidth - 684, screenHeight - 200, screenWidth - 678, screenHeight - 250);
-		draw2Dbox(screenWidth - 678, screenHeight - 244, screenWidth - 624, screenHeight - 250);
-		draw2Dbox(screenWidth - 630, screenHeight - 250, screenWidth - 624, screenHeight - 200);
-		draw2Dbox(screenWidth - 651, screenHeight - 250, screenWidth - 657, screenHeight - 300);
+			/* Lower Part */
+			draw2Dbox(screenWidth - 804, screenHeight - 253, screenWidth - 798, screenHeight - 259);
+			draw2Dbox(screenWidth - 798, screenHeight - 259, screenWidth - 792, screenHeight - 265);
+			draw2Dbox(screenWidth - 792, screenHeight - 265, screenWidth - 786, screenHeight - 271);
+			draw2Dbox(screenWidth - 786, screenHeight - 271, screenWidth - 780, screenHeight - 277);
+			draw2Dbox(screenWidth - 780, screenHeight - 277, screenWidth - 774, screenHeight - 283);
+			draw2Dbox(screenWidth - 774, screenHeight - 283, screenWidth - 768, screenHeight - 289);
+			draw2Dbox(screenWidth - 768, screenHeight - 289, screenWidth - 762, screenHeight - 295);
+			//draw2Dbox(screenWidth - 762, screenHeight - 295, screenWidth - 756, screenHeight - 301);
+			/* Draw E */
+			draw2Dbox(screenWidth - 750, screenHeight - 200, screenWidth - 744, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 744, screenHeight - 200, screenWidth - 694, screenHeight - 206);//top
+			draw2Dbox(screenWidth - 744, screenHeight - 247, screenWidth - 719, screenHeight - 253);//middle
+			draw2Dbox(screenWidth - 744, screenHeight - 294, screenWidth - 694, screenHeight - 300);//bottom
+			/* Draw Y */
+			draw2Dbox(screenWidth - 684, screenHeight - 200, screenWidth - 678, screenHeight - 250);
+			draw2Dbox(screenWidth - 678, screenHeight - 244, screenWidth - 624, screenHeight - 250);
+			draw2Dbox(screenWidth - 630, screenHeight - 250, screenWidth - 624, screenHeight - 200);
+			draw2Dbox(screenWidth - 651, screenHeight - 250, screenWidth - 657, screenHeight - 300);
 
-		/* Draw F */
-		draw2Dbox(screenWidth - 600, screenHeight - 200, screenWidth - 594, screenHeight - 300);
-		draw2Dbox(screenWidth - 600, screenHeight - 200, screenWidth - 540, screenHeight - 206);//top
-		draw2Dbox(screenWidth - 600, screenHeight - 247, screenWidth - 570, screenHeight - 253);//middle
+			/* Draw F */
+			draw2Dbox(screenWidth - 600, screenHeight - 200, screenWidth - 594, screenHeight - 300);
+			draw2Dbox(screenWidth - 600, screenHeight - 200, screenWidth - 540, screenHeight - 206);//top
+			draw2Dbox(screenWidth - 600, screenHeight - 247, screenWidth - 570, screenHeight - 253);//middle
 
-		/* Draw O */
-		draw2Dbox(screenWidth - 534, screenHeight - 200, screenWidth - 528, screenHeight - 300);//left
-		draw2Dbox(screenWidth - 480, screenHeight - 200, screenWidth - 474, screenHeight - 300);//right
-		draw2Dbox(screenWidth - 534, screenHeight - 200, screenWidth - 474, screenHeight - 206);//top
-		draw2Dbox(screenWidth - 534, screenHeight - 300, screenWidth - 474, screenHeight - 294);//bottom
+			/* Draw O */
+			draw2Dbox(screenWidth - 534, screenHeight - 200, screenWidth - 528, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 480, screenHeight - 200, screenWidth - 474, screenHeight - 300);//right
+			draw2Dbox(screenWidth - 534, screenHeight - 200, screenWidth - 474, screenHeight - 206);//top
+			draw2Dbox(screenWidth - 534, screenHeight - 300, screenWidth - 474, screenHeight - 294);//bottom
 
-		/* Draw U */
-		draw2Dbox(screenWidth - 468, screenHeight - 200, screenWidth - 462, screenHeight - 300);//left
-		draw2Dbox(screenWidth - 414, screenHeight - 200, screenWidth - 408, screenHeight - 300);//right
-		draw2Dbox(screenWidth - 468, screenHeight - 300, screenWidth - 408, screenHeight - 294);//bottom
-		/* Draw n */
-		draw2Dbox(screenWidth - 402, screenHeight - 200, screenWidth - 396, screenHeight - 300);//left
-		draw2Dbox(screenWidth - 348, screenHeight - 200, screenWidth - 342, screenHeight - 300);//right
-		draw2Dbox(screenWidth - 402, screenHeight - 200, screenWidth - 342, screenHeight - 206);//top
-		/* Draw d */
-		draw2Dbox(screenWidth - 336, screenHeight - 195, screenWidth - 330, screenHeight - 305);//left
-		draw2Dbox(screenWidth - 282, screenHeight - 200, screenWidth - 276, screenHeight - 300);//right
-		draw2Dbox(screenWidth - 336, screenHeight - 300, screenWidth - 276, screenHeight - 294);//bottom
-		draw2Dbox(screenWidth - 336, screenHeight - 200, screenWidth - 276, screenHeight - 206);//top
+			/* Draw U */
+			draw2Dbox(screenWidth - 468, screenHeight - 200, screenWidth - 462, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 414, screenHeight - 200, screenWidth - 408, screenHeight - 300);//right
+			draw2Dbox(screenWidth - 468, screenHeight - 300, screenWidth - 408, screenHeight - 294);//bottom
+			/* Draw n */
+			draw2Dbox(screenWidth - 402, screenHeight - 200, screenWidth - 396, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 348, screenHeight - 200, screenWidth - 342, screenHeight - 300);//right
+			draw2Dbox(screenWidth - 402, screenHeight - 200, screenWidth - 342, screenHeight - 206);//top
+			/* Draw d */
+			draw2Dbox(screenWidth - 336, screenHeight - 195, screenWidth - 330, screenHeight - 305);//left
+			draw2Dbox(screenWidth - 282, screenHeight - 200, screenWidth - 276, screenHeight - 300);//right
+			draw2Dbox(screenWidth - 336, screenHeight - 300, screenWidth - 276, screenHeight - 294);//bottom
+			draw2Dbox(screenWidth - 336, screenHeight - 200, screenWidth - 276, screenHeight - 206);//top
 		}
-		else if(win_message == 1)
+		if(win_message == 1)
 		{
 			/* Draw C */
-			draw2Dbox(screenWidth - 816, screenHeight - 200, screenWidth - 810, screenHeight - 300);
+			draw2Dbox(screenWidth - 816, screenHeight - 200, screenWidth - 810, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 816, screenHeight - 200, screenWidth - 756, screenHeight - 206);//top
+			draw2Dbox(screenWidth - 816, screenHeight - 300, screenWidth - 756, screenHeight - 294);//bottom
 			/* Draw O */
+			draw2Dbox(screenWidth - 750, screenHeight - 200, screenWidth - 744, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 690, screenHeight - 200, screenWidth - 684, screenHeight - 300);//right
+			draw2Dbox(screenWidth - 750, screenHeight - 200, screenWidth - 684, screenHeight - 206);//top
+			draw2Dbox(screenWidth - 750, screenHeight - 300, screenWidth - 684, screenHeight - 294);//bottom
 			/* Draw M */
+			draw2Dbox(screenWidth - 678, screenHeight - 200, screenWidth - 672, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 651, screenHeight - 200, screenWidth - 645, screenHeight - 300);//middle
+			draw2Dbox(screenWidth - 624, screenHeight - 200, screenWidth - 618, screenHeight - 300);//right
+			draw2Dbox(screenWidth - 678, screenHeight - 200, screenWidth - 618, screenHeight - 205);//top
 			/* Draw P */
+			draw2Dbox(screenWidth - 612, screenHeight - 200, screenWidth - 606, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 558, screenHeight - 200, screenWidth - 552, screenHeight - 250);//right
+			draw2Dbox(screenWidth - 612, screenHeight - 200, screenWidth - 552, screenHeight - 206);//top
+			draw2Dbox(screenWidth - 612, screenHeight - 244, screenWidth - 552, screenHeight - 250);//bottom
 			/* Draw L */
+			draw2Dbox(screenWidth - 546, screenHeight - 200, screenWidth - 540, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 546, screenHeight - 295, screenWidth - 486, screenHeight - 300);//bottom
 			/* Draw E */
+			draw2Dbox(screenWidth - 480, screenHeight - 200, screenWidth - 474, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 480, screenHeight - 200, screenWidth - 420, screenHeight - 206);//top
+			draw2Dbox(screenWidth - 480, screenHeight - 247, screenWidth - 450, screenHeight - 253);//middle
+			draw2Dbox(screenWidth - 480, screenHeight - 294, screenWidth - 420, screenHeight - 300);//bottom
 			/* Draw T */
+			draw2Dbox(screenWidth - 387, screenHeight - 200, screenWidth - 381, screenHeight - 300);//middle
+			draw2Dbox(screenWidth - 414, screenHeight - 200, screenWidth - 354, screenHeight - 206);//top
 			/* Draw E */
+			draw2Dbox(screenWidth - 348, screenHeight - 200, screenWidth - 342, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 348, screenHeight - 200, screenWidth - 284, screenHeight - 206);//top
+			draw2Dbox(screenWidth - 348, screenHeight - 247, screenWidth - 318, screenHeight - 253);//middle
+			draw2Dbox(screenWidth - 348, screenHeight - 294, screenWidth - 284, screenHeight - 300);//bottom
 		}
-		else if(death_message == 1)
+		if(death_message == 1)
 		{
-
+			/* Draw Y */
+			draw2Dbox(screenWidth - 816, screenHeight - 200, screenWidth - 810, screenHeight - 250);//left
+			draw2Dbox(screenWidth - 816, screenHeight - 244, screenWidth - 756, screenHeight - 250);//middle H
+			draw2Dbox(screenWidth - 762, screenHeight - 250, screenWidth -  756, screenHeight - 200);//right
+			draw2Dbox(screenWidth - 788, screenHeight - 250, screenWidth - 783, screenHeight - 300);//middle V
+			/* Draw O */
+			draw2Dbox(screenWidth - 750, screenHeight - 200, screenWidth - 744, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 696, screenHeight - 200, screenWidth - 690, screenHeight - 300);//right
+			draw2Dbox(screenWidth - 750, screenHeight - 200, screenWidth - 690, screenHeight - 206);//top
+			draw2Dbox(screenWidth - 750, screenHeight - 300, screenWidth - 690, screenHeight - 294);//bottom
+			/* Draw U */
+			draw2Dbox(screenWidth - 684, screenHeight - 200, screenWidth - 678, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 630, screenHeight - 200, screenWidth - 624, screenHeight - 300);//right
+			draw2Dbox(screenWidth - 684, screenHeight - 300, screenWidth - 624, screenHeight - 294);//bottom
+			/* Draw D */
+			draw2Dbox(screenWidth - 600, screenHeight - 195, screenWidth - 594, screenHeight - 305);//left
+			draw2Dbox(screenWidth - 546, screenHeight - 200, screenWidth - 540, screenHeight - 300);//right
+			draw2Dbox(screenWidth - 600, screenHeight - 300, screenWidth - 540, screenHeight - 294);//bottom
+			draw2Dbox(screenWidth - 600, screenHeight - 200, screenWidth - 540, screenHeight - 206);//top
+			/* Draw I */
+			draw2Dbox(screenWidth - 507, screenHeight - 200, screenWidth - 501, screenHeight - 300);//middle
+			draw2Dbox(screenWidth - 534, screenHeight - 300, screenWidth - 474, screenHeight - 294);//bottom
+			draw2Dbox(screenWidth - 534, screenHeight - 200, screenWidth - 474, screenHeight - 206);//top
+			/* Draw E */
+			draw2Dbox(screenWidth - 468, screenHeight - 200, screenWidth - 462, screenHeight - 300);//left
+			draw2Dbox(screenWidth - 468, screenHeight - 200, screenWidth - 408, screenHeight - 206);//top
+			draw2Dbox(screenWidth - 468, screenHeight - 247, screenWidth - 438, screenHeight - 253);//middle
+			draw2Dbox(screenWidth - 468, screenHeight - 294, screenWidth - 408, screenHeight - 300);//bottom
+			/* Draw D */
+			draw2Dbox(screenWidth - 402, screenHeight - 195, screenWidth - 396, screenHeight - 305);//left
+			draw2Dbox(screenWidth - 348, screenHeight - 200, screenWidth - 342, screenHeight - 300);//right
+			draw2Dbox(screenWidth - 402, screenHeight - 300, screenWidth - 342, screenHeight - 294);//bottom
+			draw2Dbox(screenWidth - 402, screenHeight - 200, screenWidth - 342, screenHeight - 206);//top
 		}
 		free(fx);
 		free(fy);
@@ -643,7 +701,7 @@ float *la;
 			}
 			else if(death_message == 1 && (float)(clock() - mtimer)/(float)CLOCKS_PER_SEC > 1.5)
 			{
-				death_message == 0;
+				death_message = 0;
 			}
 
 			collisionResponse();
@@ -867,6 +925,9 @@ int i, j, k, l=0, r;
 	 e[0].x = 9;
 	 e[0].y = 2;
 	 e[0].z = 15;
+	 e[0].px = e[0].x;
+	 e[0].px = e[0].y;
+	 e[0].px = e[0].z;
 	 drawEnemy(e[0]);
 
 	 e[1].t = RED;
@@ -877,6 +938,9 @@ int i, j, k, l=0, r;
 	 e[1].x = 27;
 	 e[1].y = 2;
 	 e[1].z = 27;
+	 e[1].px = e[1].x;
+	 e[1].px = e[1].y;
+	 e[1].px = e[1].z;
 	 drawEnemy(e[1]);
 
 	 e[2].t = YELLOW;
@@ -887,6 +951,9 @@ int i, j, k, l=0, r;
 	 e[2].x = 21;
 	 e[2].y = 2;
 	 e[2].z = 9;
+	 e[2].px = e[2].x;
+	 e[2].px = e[2].y;
+	 e[2].px = e[2].z;
 	 drawEnemy(e[2]);
 
 	 e[3].t = YELLOW;
@@ -897,6 +964,9 @@ int i, j, k, l=0, r;
 	 e[3].x = 3;
 	 e[3].y = 2;
 	 e[3].z = 27;
+	 e[3].px = e[3].x;
+	 e[3].px = e[3].y;
+	 e[3].px = e[3].z;
 	 drawEnemy(e[3]);
 	/* starts the graphics processing loop */
 	/* code after this will not run until the program exits */
