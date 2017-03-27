@@ -28,6 +28,95 @@ wall new_wall;
 
 wall wall_array[30];
 
+greenCube gcubes[2];
+
+blueCube bcubes[2];
+
+redCube rcubes[2];
+
+blueCube fallingCubes[10];
+
+void redCubeEffect()
+{
+  int i;
+  for(i=0; i<4; i++)
+  {
+    eraseEnemy(e[i]);
+    e[i].x = rand()%36;
+    e[i].z = rand()%36;
+  }
+}
+
+void blueCubeEffect()
+{
+  int i;
+  for(i=0; i<10; i++)
+  {
+    fallingCubes[i].x = 2 + (rand()%5*6);
+    fallingCubes[i].y = 6;
+    fallingCubes[i].z = 2 + (rand()%5*6);
+    world[fallingCubes[i].x][fallingCubes[i].y][fallingCubes[i].z] = 6;
+  }
+}
+
+void greenCubeEffect()
+{
+  int x, z, nx, ny, nz;
+  float *fx = malloc(sizeof(float)), *fy = malloc(sizeof(float)), *fz = malloc(sizeof(float));
+  getViewPosition(fx, fy, fz);
+  nx = (int)(-*fx);
+  ny = (int)(-*fy);
+  nz = (int)(-*fz);
+  x = rand()%36;
+  z = rand()%36;
+  if(x%6 == 0)
+  {
+    x++;
+  }
+  if(z%6 == 0)
+  {
+    z++;
+  }
+  while(ny < 8)
+  {
+    ny++;
+    setViewPosition((float)-nx, (float)-ny, (float)-nz);
+  }
+  if(x-(nx) < 0)
+  {
+    while(nx > x)
+    {
+      nx--;
+      setViewPosition((float)-nx, (float)-ny, (float)-nz);
+    }
+  }
+  else
+  {
+    while(nx < x)
+    {
+      nx++;
+      setViewPosition((float)-nx, (float)-ny, (float)-nz);
+    }
+  }
+
+  if(z-(nz) < 0)
+  {
+    while(nz > z)
+    {
+      nz--;
+      setViewPosition((float)-nx, (float)-ny, (float)-nz);
+    }
+  }
+  else
+  {
+    while(nz < z)
+    {
+      nz++;
+      setViewPosition((float)-nx, (float)-ny, (float)-nz);
+    }
+  }
+}
+
 void initializeGame()
 {
   int i, j, k, l=0, r;
@@ -149,6 +238,24 @@ void initializeGame()
   key.z = 3 + (rand() % 5 + 1)*6;
   key.y = 1;
   keyPlacement(key);
+
+  for(i=0; i<2; i ++)
+  {
+    bcubes[i].x = 2 + (rand()%5*6);
+    bcubes[i].y = 1;
+    bcubes[i].z = 2 + (rand()%5*6);
+    world[bcubes[i].x][1][bcubes[i].z] = 2;
+
+    rcubes[i].x = 1 + (rand()%5*6);
+    rcubes[i].y = 1;
+    rcubes[i].z = 1 + (rand()%5*6);
+    world[rcubes[i].x][1][rcubes[i].z] = 3;
+
+    gcubes[i].x = 4 + (rand()%5*6);
+    gcubes[i].y = 1;
+    gcubes[i].z = 4 + (rand()%5*6);
+    world[gcubes[i].x][1][gcubes[i].z] = 1;
+  }
 
   /*Create Enemies*/
   e[0].t = RED;

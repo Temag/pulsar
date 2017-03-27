@@ -93,6 +93,15 @@ extern wall new_wall;
 
 extern wall wall_array[30];
 
+extern blueCube bcubes[2];
+
+extern redCube rcubes[2];
+
+extern greenCube gcubes[2];
+
+extern blueCube fallingCubes[10];
+
+
 /********* end of extern variable declarations **************/
 
 /********* Global Variable Declaration **************/
@@ -123,7 +132,7 @@ void collisionResponse() {
 
 	/* your collision code goes here */
 	float *x = malloc(sizeof(float)), *y = malloc(sizeof(float)), *z = malloc(sizeof(float));
-	int fx, fy, fz, rx, ry, rz;
+	int fx, fy, fz, rx, ry, rz, i;
 	getViewPosition(x, y, z);
 	fx = (int)(*x * -1);
 	fy = (int)(*y * -1);
@@ -150,6 +159,54 @@ void collisionResponse() {
 		initializeGame();
 		chooseWall();
 		mtimer = clock();
+	}
+
+	if((fx == rcubes[0].x && fz == rcubes[0].z) && fy == 1)
+	{
+		world[fx][1][fz] = 0;
+		rcubes[0].x = 0;
+		rcubes[0].z = 0;
+		redCubeEffect();
+	}
+
+	if((fx == rcubes[1].x && fz == rcubes[1].z) && fy == 1)
+	{
+		world[fx][1][fz] = 0;
+		rcubes[1].x = 0;
+		rcubes[1].z = 0;
+		redCubeEffect();
+	}
+
+	if(fx == bcubes[0].x && fz == bcubes[0].z && fy == 1)
+	{
+		world[fx][1][fz] =0;
+		bcubes[0].x = 0;
+		bcubes[0].z = 0;
+		blueCubeEffect();
+	}
+
+	if(fx == bcubes[1].x && fz == bcubes[1].z && fy == 1)
+	{
+		world[fx][1][fz] =0;
+		bcubes[1].x = 0;
+		bcubes[1].z = 0;
+		blueCubeEffect();
+	}
+
+	if(fx == gcubes[0].x && fz == gcubes[0].z && fy == 1)
+	{
+		world[fx][1][fz] =0;
+		bcubes[0].x = 0;
+		bcubes[0].z = 0;
+		greenCubeEffect();
+	}
+
+	if(fx == gcubes[1].x && fz == gcubes[1].z && fy == 1)
+	{
+		world[fx][1][fz] =0;
+		bcubes[1].x = 0;
+		bcubes[1].z = 0;
+		greenCubeEffect();
 	}
 
 	/*
@@ -196,7 +253,7 @@ void collisionResponse() {
 	/*
 	Collision response for player's projectile hitting a wall
 	*/
-	if(world[(int)px][(int)py][(int)pz] == 2)
+	if(world[(int)px][(int)py][(int)pz] == 2 || world[(int)px][(int)py][(int)pz] == 6)
 	{
 		world[(int)px][(int)py][(int)pz] = 0;
 		hideMob(0);
@@ -337,20 +394,20 @@ void draw2D() {
 			 set2Dcolour(red);
 			 x = (screenWidth-15) - (e[0].x*6);
 			 z = (e[0].z*6) + (screenHeight-228);
-			 draw2Dbox(x+9, z+9, x-8, z-8);
+			 draw2Dbox(x-6, z-12, x+12, z+6);
 
 			 x = (screenWidth-15) - (e[1].x*6);
 			 z = (e[1].z*6) + (screenHeight-228);
-			 draw2Dbox(x+9, z+9, x-8, z-8);
+			 draw2Dbox(x-6, z-12, x+12, z+6);
 
 			 set2Dcolour(yellow);
 			 x = (screenWidth-15) - (e[2].x*6);
 			 z = (e[2].z*6) + (screenHeight-228);
-			 draw2Dbox(x+9, z+9, x-8, z-8);
+			 draw2Dbox(x-6, z-12, x+12, z+6);
 
 			 x = (screenWidth-15) - (e[3].x*6);
 			 z = (e[3].z*6) + (screenHeight-228);
-			 draw2Dbox(x+9, z+9, x-8, z-8);
+			 draw2Dbox(x-6, z-12, x+12, z+6);
 
 			 /*Creates the floor of the map*/
 			 set2Dcolour(green);
@@ -370,6 +427,7 @@ void draw2D() {
 		 else if(displayMap == 2)
 	 	{
 			/*Create colour variables*/
+			GLfloat red[] = {255.0, 0.0, 0.0, 1.0};
 			GLfloat green[] = {0.0, 0.5, 0.0, 0.5};
 			GLfloat black[] = {0.0, 0.0, 0.0, 0.5};
 			GLfloat blue[] = {0.0, 0.0, 0.5, 0.5};
@@ -392,7 +450,30 @@ void draw2D() {
 				z = pz*16 + (screenHeight - 631);
 				draw2Dbox(x, z, x+16, z+16);
 			}
+			/* Draw key */
+			set2Dcolour(white);
+			x = (screenWidth - 240) - (key.x*16);
+			z = (key.z*16) + (screenHeight-631);
+			draw2Dbox(x, z, x+16, z+16);
 
+			/* Draw enemies */
+			set2Dcolour(red);
+			x = (screenWidth-240) - (e[0].x*16);
+			z = (e[0].z*16) + (screenHeight-631);
+			draw2Dbox(x-16, z-32, x+32, z+16);
+
+			x = (screenWidth-240) - (e[1].x*16);
+			z = (e[1].z*16) + (screenHeight-631);
+			draw2Dbox(x-16, z-32, x+32, z+16);
+
+			set2Dcolour(yellow);
+			x = (screenWidth-240) - (e[2].x*16);
+			z = (e[2].z*16) + (screenHeight-631);
+			draw2Dbox(x-16, z-32, x+32, z+16);
+
+			x = (screenWidth-240) - (e[3].x*16);
+			z = (e[3].z*16) + (screenHeight-631);
+			draw2Dbox(x-16, z-32, x+32, z+16);
 			/*Draw permanent pillars*/
 			set2Dcolour(white);
 			for(i=screenWidth-720; i<screenWidth-240; i+=96)
@@ -667,6 +748,16 @@ float *la;
 					else
 					{
 						enemyMovement(&e[i]);
+					}
+
+					for(i=0; i<10; i++)
+					{
+						if(world[fallingCubes[i].x][fallingCubes[i].y-1][fallingCubes[i].z] == 0)
+						{
+							world[fallingCubes[i].x][fallingCubes[i].y][fallingCubes[i].z] = 0;
+							world[fallingCubes[i].x][fallingCubes[i].y-1][fallingCubes[i].z] = 6;
+							fallingCubes[i].y--;
+						}
 					}
 				}
 				animateEnemy(&e[0]);

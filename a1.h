@@ -5,6 +5,24 @@ typedef struct{
   int x;
   int y;
   int z;
+}blueCube;
+
+typedef struct{
+  int x;
+  int y;
+  int z;
+}greenCube;
+
+typedef struct{
+  int x;
+  int y;
+  int z;
+}redCube;
+
+typedef struct{
+  int x;
+  int y;
+  int z;
   int set;
 }keyCube;
 
@@ -40,6 +58,12 @@ typedef struct{
   float yratio;
   float zratio;
 }enemy;
+
+void redCubeEffect();
+
+void greenCubeEffect();
+
+void blueCubeEffect();
 
 void initializeGame();
 
