@@ -10,5 +10,5 @@ Note: This project requires OpenGL, and the path leading to OpenGL needs to be i
 Run make clean to delete the executable.
 
 # Running the Project
-To run the project, first build it by running 'make'. Then run the following command:
-'./a4'
+To run the project, first build it by running `make`. Then run the following command:
+```./a4```
