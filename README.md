@@ -1,5 +1,5 @@
 # pulsar
-This repository contains a 3D version of the arcade game Pulsar for the Video Game Programming Class at University of Guelph using OpenGL.<br/>
+This repository contains a 3D version of the arcade game Pulsar that was created for the Video Game Programming Class at University of Guelph using OpenGL.<br/>
 Notable achievements:<br/>
 * Pseudo random wall generation
 * Pseudo random wall movement
